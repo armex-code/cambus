@@ -9,6 +9,15 @@ export const DEMO_PENDING_COOKIE = "aui_demo_pending_email";
 export const DEMO_OTP_CODE = "424242";
 
 /**
+ * Shared tour account. It also exists in Supabase (created by
+ * supabase/seed.sql with this fixed password) so the demo keeps working
+ * after switching from the in-memory store to the real database. Remove
+ * the auth user to disable it for launch.
+ */
+export const DEMO_EMAIL = "demo@aui.ma";
+export const DEMO_SUPABASE_PASSWORD = "aui-carpool-demo-424242";
+
+/**
  * Demo sessions carry the whole profile in the cookie (base64url JSON) so
  * they survive serverless instances that each seed their own in-memory
  * store. Supabase mode uses real auth cookies instead.

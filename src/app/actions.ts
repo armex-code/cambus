@@ -7,9 +7,11 @@ import { createClient, supabaseEnabled } from "@/lib/supabase/server";
 import { getStore, isDemoMode } from "@/lib/data";
 import { findOrCreateDemoProfile } from "@/lib/data/demo";
 import {
+  DEMO_EMAIL,
   DEMO_OTP_CODE,
   DEMO_PENDING_COOKIE,
   DEMO_SESSION_COOKIE,
+  DEMO_SUPABASE_PASSWORD,
   encodeDemoSession,
   getCurrentProfile,
   getSessionUserId,
@@ -62,6 +64,13 @@ export async function requestOtp(
   }
 
   if (supabaseEnabled()) {
+    if (email === DEMO_EMAIL) {
+      return {
+        step: "code",
+        email,
+        notice: `Shared demo account: no email is sent. Use code ${DEMO_OTP_CODE}.`,
+      };
+    }
     const sb = await createClient();
     const { error } = await sb.auth.signInWithOtp({
       email,
@@ -94,13 +103,24 @@ export async function verifyOtp(
 
   if (supabaseEnabled()) {
     const sb = await createClient();
-    const { error } = await sb.auth.verifyOtp({
-      email,
-      token: code,
-      type: "email",
-    });
-    if (error)
-      return { step: "code", email, error: "That code didn't match. Check the email and try again." };
+    if (email === DEMO_EMAIL) {
+      if (code !== DEMO_OTP_CODE)
+        return { step: "code", email, error: `The demo account code is ${DEMO_OTP_CODE}.` };
+      const { error } = await sb.auth.signInWithPassword({
+        email,
+        password: DEMO_SUPABASE_PASSWORD,
+      });
+      if (error)
+        return { step: "email", error: "The demo account isn't set up in this database. Run supabase/seed.sql first." };
+    } else {
+      const { error } = await sb.auth.verifyOtp({
+        email,
+        token: code,
+        type: "email",
+      });
+      if (error)
+        return { step: "code", email, error: "That code didn't match. Check the email and try again." };
+    }
   } else {
     const cookieStore = await cookies();
     const pending = cookieStore.get(DEMO_PENDING_COOKIE)?.value;
