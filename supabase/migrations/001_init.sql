@@ -216,3 +216,7 @@ create policy "reviewers insert own reviews" on public.reviews
 grant select on public.profiles_public to anon, authenticated;
 grant select on public.ride_seats to anon, authenticated;
 grant execute on function public.get_contact_phone to authenticated;
+
+-- Postgres grants EXECUTE on new functions to PUBLIC by default; tighten it.
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+revoke execute on function public.get_contact_phone(uuid) from public, anon;
