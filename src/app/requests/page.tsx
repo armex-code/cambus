@@ -38,7 +38,7 @@ export default async function RequestsPage({
             Ride requests
           </h1>
           <p className="mt-1 text-sm text-ink-soft">
-            Students looking for a seat. Driving one of these routes? Post the
+            People looking for a seat. Driving one of these routes? Post the
             ride and they'll book it.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default async function RequestsPage({
         <div className="mt-5">
           <Notice>
             Your request is up. When a driver posts a matching ride, book it
-            from the rides page — and keep an eye on your WhatsApp.
+            from the rides page, and keep an eye on your WhatsApp.
           </Notice>
         </div>
       )}

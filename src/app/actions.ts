@@ -4,12 +4,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient, supabaseEnabled } from "@/lib/supabase/server";
-import { getStore } from "@/lib/data";
+import { getStore, isDemoMode } from "@/lib/data";
 import { findOrCreateDemoProfile } from "@/lib/data/demo";
 import {
   DEMO_OTP_CODE,
   DEMO_PENDING_COOKIE,
   DEMO_SESSION_COOKIE,
+  encodeDemoSession,
   getCurrentProfile,
   getSessionUserId,
   profileComplete,
@@ -56,7 +57,7 @@ export async function requestOtp(
     return {
       step: "email",
       error:
-        "Sign-in is reserved for @aui.ma addresses — that's what keeps every account a real AUI student.",
+        "Sign-in is reserved for @aui.ma addresses. That is what keeps every account a real member of the AUI community.",
     };
   }
 
@@ -79,7 +80,7 @@ export async function requestOtp(
   return {
     step: "code",
     email,
-    notice: `Demo mode — no email is actually sent. Use code ${DEMO_OTP_CODE} to sign in.`,
+    notice: `Demo mode: no email is actually sent. Use code ${DEMO_OTP_CODE} to sign in.`,
   };
 }
 
@@ -104,12 +105,16 @@ export async function verifyOtp(
     const cookieStore = await cookies();
     const pending = cookieStore.get(DEMO_PENDING_COOKIE)?.value;
     if (pending !== email)
-      return { step: "email", error: "Session expired — enter your email again." };
+      return { step: "email", error: "Session expired. Enter your email again." };
     if (code !== DEMO_OTP_CODE)
       return { step: "code", email, error: `In demo mode the code is ${DEMO_OTP_CODE}.` };
     const profile = findOrCreateDemoProfile(email);
     cookieStore.delete(DEMO_PENDING_COOKIE);
-    cookieStore.set(DEMO_SESSION_COOKIE, profile.id, SESSION_COOKIE_OPTS);
+    cookieStore.set(
+      DEMO_SESSION_COOKIE,
+      encodeDemoSession(profile),
+      SESSION_COOKIE_OPTS,
+    );
   }
 
   const profile = await getCurrentProfile();
@@ -138,9 +143,23 @@ export async function completeOnboarding(
   const bio = str(formData, "bio");
   if (fullName.length < 3) return { error: "Please enter your full name." };
   if (!/^(\+212|0)[5-8]\d{8}$/.test(phone.replace(/[\s-]/g, "")))
-    return { error: "Enter a valid Moroccan mobile number (e.g. 06 12 34 56 78) — it's only shared after a booking is confirmed." };
+    return { error: "Enter a valid Moroccan mobile number (e.g. 06 12 34 56 78). It is only shared after a booking is confirmed." };
   await getStore().updateProfile(userId, { fullName, phone, bio });
+  await refreshDemoSessionCookie(userId);
   redirect("/rides");
+}
+
+/** Demo mode: keep the profile-carrying session cookie in sync after edits. */
+async function refreshDemoSessionCookie(userId: string) {
+  if (!isDemoMode()) return;
+  const profile = await getStore().getProfile(userId);
+  if (!profile) return;
+  const cookieStore = await cookies();
+  cookieStore.set(
+    DEMO_SESSION_COOKIE,
+    encodeDemoSession(profile),
+    SESSION_COOKIE_OPTS,
+  );
 }
 
 export async function updateProfileAction(
@@ -156,6 +175,7 @@ export async function updateProfileAction(
   if (!/^(\+212|0)[5-8]\d{8}$/.test(phone.replace(/[\s-]/g, "")))
     return { error: "Enter a valid Moroccan mobile number." };
   await getStore().updateProfile(userId, { fullName, phone, bio });
+  await refreshDemoSessionCookie(userId);
   revalidatePath("/settings");
   return { success: true };
 }
@@ -190,6 +210,8 @@ export async function createRideAction(
     return { error: "Pick a destination city." };
   if (fromCity === toCity)
     return { error: "Departure and destination can't be the same place." };
+  if (fromCity !== "Ifrane" && toCity !== "Ifrane")
+    return { error: "Rides on AUI Carpool start or end in Ifrane. Set one side of the trip to Ifrane." };
   if (!date || !time) return { error: "Set the departure date and time." };
   const departureAt = new Date(`${date}T${time}`);
   if (Number.isNaN(departureAt.getTime()) || departureAt.getTime() < Date.now())
@@ -285,6 +307,8 @@ export async function createRequestAction(
     return { error: "Pick a destination city." };
   if (fromCity === toCity)
     return { error: "Departure and destination can't be the same place." };
+  if (fromCity !== "Ifrane" && toCity !== "Ifrane")
+    return { error: "Requests on AUI Carpool start or end in Ifrane. Set one side of the trip to Ifrane." };
   if (!travelDate || travelDate < new Date().toISOString().slice(0, 10))
     return { error: "Pick a date from today onward." };
   if (!TIMES_OF_DAY.includes(timeOfDay))

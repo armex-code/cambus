@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { getCurrentProfile } from "@/lib/auth";
@@ -17,7 +18,7 @@ export default async function LoginPage() {
       <div className="mb-8 text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-pine-100 px-3.5 py-1.5 text-xs font-semibold text-pine-800">
           <ShieldCheck size={14} />
-          Students only, verified by email
+          AUI community only, verified by email
         </span>
         <h1 className="mt-4 font-display text-3xl font-semibold text-ink">
           Sign in to AUI Carpool
@@ -28,6 +29,17 @@ export default async function LoginPage() {
       </div>
       <Card className="p-6 sm:p-8">
         <LoginForm />
+        <p className="mt-5 text-center text-xs text-ink-faint">
+          By continuing you accept the{" "}
+          <Link href="/terms" className="underline hover:text-pine-800">
+            general conditions
+          </Link>{" "}
+          and the{" "}
+          <Link href="/privacy" className="underline hover:text-pine-800">
+            data protection policy
+          </Link>
+          .
+        </p>
       </Card>
       {isDemoMode() && (
         <p className="mt-4 text-center text-xs text-ink-faint">

@@ -132,7 +132,7 @@ async function RidingBookingCard({
               phone={contact.phone}
               whatsappHref={whatsappLink(
                 contact.phone,
-                `Salam ${contact.name.split(" ")[0]}! It's ${userName} from AUI Carpool — about the ${ride.fromCity} → ${ride.toCity} ride.`,
+                `Salam ${contact.name.split(" ")[0]}! It's ${userName} from AUI Carpool, about the ${ride.fromCity} → ${ride.toCity} ride.`,
               )}
               whatsappLabel="WhatsApp driver"
             />
@@ -247,7 +247,7 @@ async function DrivingRideCard({
 
       {bookings.length === 0 && !past && ride.status === "active" && (
         <p className="mt-4 rounded-xl bg-paper-dim/70 px-4 py-3 text-sm text-ink-faint">
-          No requests yet — they'll show up here.
+          No requests yet. They'll show up here.
         </p>
       )}
 
@@ -289,7 +289,7 @@ async function AcceptedPassengerRow({
           phone={contact.phone}
           whatsappHref={whatsappLink(
             contact.phone,
-            `Salam ${contact.name.split(" ")[0]}! ${userName} here — your driver for ${ride.fromCity} → ${ride.toCity} on AUI Carpool.`,
+            `Salam ${contact.name.split(" ")[0]}! ${userName} here, your driver for ${ride.fromCity} → ${ride.toCity} on AUI Carpool.`,
           )}
           whatsappLabel="WhatsApp"
         />
@@ -398,7 +398,7 @@ export default async function TripsPage({
 
       {reviewed && (
         <div className="mt-4">
-          <Notice>Review posted — thanks for keeping ratings honest.</Notice>
+          <Notice>Review posted. Thanks for keeping ratings honest.</Notice>
         </div>
       )}
 
@@ -433,7 +433,7 @@ export default async function TripsPage({
               title="You haven't offered any rides yet"
               action={<ButtonLink href="/offer">Offer your first ride</ButtonLink>}
             >
-              Got a car on campus? Your empty seats are someone's way home —
+              Got a car on campus? Your empty seats are someone's way home,
               and your fuel money back.
             </EmptyState>
           ) : (
@@ -451,7 +451,7 @@ export default async function TripsPage({
             title="No trips booked yet"
             action={<ButtonLink href="/rides">Browse rides</ButtonLink>}
           >
-            Find a ride out of Ifrane and request a seat — your bookings and
+            Find a ride out of Ifrane and request a seat. Your bookings and
             their status will live here.
           </EmptyState>
         ) : (

@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createRideAction, type FormState } from "@/app/actions";
-import { CITIES, priceHint } from "@/lib/cities";
+import { CITIES, priceHint, roadKm, suggestedPrice } from "@/lib/cities";
 import { WEEKDAYS } from "@/lib/utils";
 import {
   Button,
@@ -29,7 +29,10 @@ export function OfferForm({
   const [fromCity, setFromCity] = useState(validCity(initialFrom) || "Ifrane");
   const [toCity, setToCity] = useState(validCity(initialTo));
   const [recurring, setRecurring] = useState(false);
+  const [price, setPrice] = useState("");
   const hint = toCity ? priceHint(fromCity, toCity) : null;
+  const suggested = toCity ? suggestedPrice(fromCity, toCity) : null;
+  const km = toCity ? roadKm(fromCity, toCity) : null;
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -41,6 +44,9 @@ export function OfferForm({
         <legend className="font-display text-lg font-semibold text-ink">
           Route
         </legend>
+        <p className="text-xs text-ink-faint">
+          Every ride on AUI Carpool starts or ends in Ifrane.
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="fromCity">From</Label>
@@ -164,13 +170,25 @@ export function OfferForm({
               min={0}
               max={1000}
               step={5}
-              placeholder={hint ? String(hint.low + 10) : "e.g. 40"}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder={suggested ? String(suggested) : "e.g. 40"}
               required
             />
+            {suggested !== null && (
+              <button
+                type="button"
+                onClick={() => setPrice(String(suggested))}
+                className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-pine-300 bg-pine-50 px-3 py-1.5 text-xs font-semibold text-pine-800 transition-colors hover:bg-pine-100"
+              >
+                Recommended: {suggested} MAD
+                {km ? <span className="font-normal text-pine-600">· ~{km} km</span> : null}
+              </button>
+            )}
             <FieldHint>
               {hint
-                ? `Students usually charge ${hint.low}–${hint.high} MAD on this route. Fair prices fill seats.`
-                : "Aim to cover fuel and tolls, not to make a profit — that keeps it cheap for everyone."}
+                ? `Riders usually pay ${hint.low} to ${hint.high} MAD on this route. Fair prices fill seats, and you always set the final price.`
+                : "Based on distance, enough to cover fuel and tolls. You set the final price."}
             </FieldHint>
           </div>
         </div>

@@ -102,7 +102,7 @@ export default async function ProfilePage({
       <div className="mt-4 space-y-4">
         {reviews.length === 0 ? (
           <EmptyState title="No reviews yet">
-            Reviews appear after completed rides — everyone starts somewhere.
+            Reviews appear after completed rides. Everyone starts somewhere.
           </EmptyState>
         ) : (
           reviews.map((review) => (

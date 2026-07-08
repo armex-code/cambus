@@ -66,7 +66,7 @@ export default async function ReviewPage({
         </div>
         <p className="mt-5 text-xs leading-relaxed text-ink-faint">
           Reviews are public on {reviewee.fullName.split(" ")[0]}'s profile and
-          can't be edited — rate the way you'd want to be rated.
+          can't be edited, so rate the way you'd want to be rated.
         </p>
       </Card>
     </div>

@@ -34,7 +34,7 @@ export function BookingForm({
         {pending ? "Sending request…" : "Request a seat"}
       </Button>
       <p className="text-center text-xs leading-relaxed text-ink-faint">
-        No payment now — you'll pay the driver in cash. They'll accept or
+        No payment now, you'll pay the driver in cash. They'll accept or
         decline your request, and you'll see it in My Trips.
       </p>
     </form>

@@ -66,7 +66,7 @@ export function LoginForm() {
           autoFocus
         />
         <FieldHint>
-          We send a one-time code — no passwords to remember, and no way in
+          We send a one-time code. No passwords to remember, and no way in
           without a real @aui.ma inbox.
         </FieldHint>
       </div>

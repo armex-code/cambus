@@ -17,8 +17,8 @@ export const metadata: Metadata = { title: "Safety & community rules" };
 const PILLARS = [
   {
     icon: BadgeCheck,
-    title: "Verified students only",
-    body: "Accounts require a live @aui.ma inbox. No alumni-of-nowhere, no anonymous drivers, no outsiders — if someone's on here, they walk the same campus you do.",
+    title: "Verified AUI emails only",
+    body: "Accounts need a live @aui.ma inbox. Students, staff and faculty, nobody else. If someone is on here, they belong to the same campus you do.",
   },
   {
     icon: Star,
@@ -33,16 +33,16 @@ const PILLARS = [
   {
     icon: Banknote,
     title: "Cash keeps it simple",
-    body: "The price is on the listing before you book. Pay the driver in the car — no cards on file, no payment disputes, no surprise fees.",
+    body: "The price is on the listing before you book. Pay the driver in the car. No cards on file, no payment disputes, no surprise fees.",
   },
 ];
 
 const RULES = [
-  { icon: Clock3, text: "Be on time. A carpool works on trust — if you'll be late, say it on WhatsApp early." },
-  { icon: Users, text: "Drivers: your car, your rules — but announce them on the listing (luggage, stops, music)." },
+  { icon: Clock3, text: "Be on time. A carpool works on trust, so if you'll be late, say it on WhatsApp early." },
+  { icon: Users, text: "Drivers: your car, your rules, but announce them on the listing (luggage, stops, music)." },
   { icon: Banknote, text: "Charge to share costs, not to profit. Fair prices are why this beats a grand taxi." },
   { icon: AlertTriangle, text: "Cancel as early as possible, from the app, so the other side can re-plan. No silent no-shows." },
-  { icon: ShieldCheck, text: "Seatbelts on, reasonable speed, no phone while driving. Passengers, speak up — it's your ride too." },
+  { icon: ShieldCheck, text: "Seatbelts on, reasonable speed, no phone while driving. Passengers, speak up. It's your ride too." },
   { icon: Star, text: "Rate honestly after every trip. Inflated stars help nobody; honest ones protect everyone." },
 ];
 
@@ -99,7 +99,7 @@ export default function SafetyPage() {
             Something went wrong on a ride?
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-            First, leave an honest review — that's the record the next student
+            First, leave an honest review. That's the record the next member
             relies on. If it's more serious than a review can carry (dangerous
             driving, harassment, a no-show that left you stranded), email{" "}
             <a

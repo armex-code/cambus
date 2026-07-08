@@ -72,6 +72,19 @@ function withDriver(ride: Ride): RideWithDriver | null {
   };
 }
 
+/**
+ * On serverless hosts each instance has its own in-memory store, so a
+ * profile created at login on one instance may be missing on the next.
+ * The session cookie carries the profile; this re-inserts it when absent.
+ */
+export function ensureDemoProfile(profile: Profile): Profile {
+  const existing = db().profiles.find((p) => p.id === profile.id);
+  if (existing) return existing;
+  const copy = { ...profile };
+  db().profiles.push(copy);
+  return copy;
+}
+
 export function findOrCreateDemoProfile(email: string): Profile {
   const normalized = email.trim().toLowerCase();
   const existing = db().profiles.find((p) => p.email === normalized);

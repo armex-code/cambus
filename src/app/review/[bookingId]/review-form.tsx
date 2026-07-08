@@ -56,7 +56,7 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
           id="comment"
           name="comment"
           maxLength={400}
-          placeholder="Punctuality, driving, vibe — what should the next student know?"
+          placeholder="Punctuality, driving, vibe. What should the next rider know?"
         />
       </div>
       <Button

@@ -29,7 +29,7 @@ export default async function RidesPage({
             Find a ride
           </h1>
           <p className="mt-1 text-sm text-ink-soft">
-            Every driver is an AUI student. Seats are paid in cash, in the car.
+            Every driver has a verified @aui.ma email. Seats are paid in cash, in the car.
           </p>
         </div>
         <ButtonLink href="/requests/new" variant="secondary" size="sm">
@@ -111,8 +111,8 @@ export default async function RidesPage({
               </div>
             }
           >
-            Post a request so drivers heading that way can find you — or check
-            back closer to the weekend, that's when most rides appear.
+            Post a request so drivers heading that way can find you, or check
+            back closer to the weekend when most rides appear.
           </EmptyState>
         ) : (
           <>

@@ -22,8 +22,8 @@ export default async function OfferPage({
         Offer a ride
       </h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Driving out of Ifrane — or back? Fill your empty seats with fellow
-        students and cover your fuel.
+        Driving out of Ifrane, or back to campus? Fill your empty seats with
+        people from AUI and cover your fuel.
       </p>
       <Card className="mt-6 p-6 sm:p-8">
         <OfferForm initialFrom={from} initialTo={to} />

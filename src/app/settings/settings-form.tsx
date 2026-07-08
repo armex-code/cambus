@@ -44,8 +44,8 @@ export function SettingsForm({
           required
         />
         <FieldHint>
-          Only shared over WhatsApp once a booking is confirmed — never shown
-          on your public profile.
+          Only shared once a booking is confirmed, never shown on your
+          public profile.
         </FieldHint>
       </div>
       <div>

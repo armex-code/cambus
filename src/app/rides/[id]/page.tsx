@@ -200,7 +200,7 @@ export default async function RideDetailPage({
                     Sign in to request a seat
                   </ButtonLink>
                   <p className="text-center text-xs text-ink-faint">
-                    @aui.ma students only.
+                    @aui.ma accounts only.
                   </p>
                 </div>
               ) : isDriver ? (
@@ -218,14 +218,14 @@ export default async function RideDetailPage({
                 <div className="space-y-3">
                   <p className="flex items-center gap-2 rounded-xl bg-pine-50 px-4 py-3 text-sm font-medium text-pine-900">
                     <CheckCircle2 size={17} className="shrink-0 text-pine-700" />
-                    You're in — {pluralize(booking.seats, "seat")} confirmed.
+                    You're in. {pluralize(booking.seats, "seat")} confirmed.
                   </p>
                   {contact && (
                     <ContactReveal
                       phone={contact.phone}
                       whatsappHref={whatsappLink(
                         contact.phone,
-                        `Salam ${contact.name.split(" ")[0]}! It's ${profile.fullName} from AUI Carpool — about the ${ride.fromCity} → ${ride.toCity} ride.`,
+                        `Salam ${contact.name.split(" ")[0]}! It's ${profile.fullName} from AUI Carpool, about the ${ride.fromCity} → ${ride.toCity} ride.`,
                       )}
                       whatsappLabel={`WhatsApp ${contact.name.split(" ")[0]}`}
                     />
@@ -238,7 +238,7 @@ export default async function RideDetailPage({
                 <div className="space-y-3">
                   <p className="flex items-center gap-2 rounded-xl bg-saffron-100 px-4 py-3 text-sm font-medium text-saffron-700">
                     <Hourglass size={16} className="shrink-0" />
-                    Request sent — waiting for the driver.
+                    Request sent. Waiting for the driver.
                   </p>
                   <p className="text-center text-xs text-ink-faint">
                     You'll see the answer in My Trips. Numbers are exchanged
@@ -246,7 +246,7 @@ export default async function RideDetailPage({
                   </p>
                 </div>
               ) : ride.seatsLeft === 0 ? (
-                <Notice>This ride is full — check other departures or post a request.</Notice>
+                <Notice>This ride is full. Check other departures or post a request.</Notice>
               ) : (
                 <BookingForm rideId={ride.id} maxSeats={Math.min(ride.seatsLeft, 4)} />
               )}

@@ -56,6 +56,19 @@ body {
   color: var(--color-pine-900);
 }
 
+/* Native date/time pickers: kill the intrinsic min-width that makes them
+   overflow their grid cell on iOS/Android, and normalize their look. */
+input[type="date"],
+input[type="time"] {
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="date"]::-webkit-date-and-time-value,
+input[type="time"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
 /* Dotted route connector used in ride cards */
 .route-dots {
   background-image: radial-gradient(circle, var(--color-line-strong) 1.2px, transparent 1.3px);

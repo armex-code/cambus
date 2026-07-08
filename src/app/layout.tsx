@@ -17,11 +17,11 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: {
-    default: "AUI Carpool — rides by AUI students, for AUI students",
+    default: "AUI Carpool | rides for the AUI community",
     template: "%s · AUI Carpool",
   },
   description:
-    "Share rides between Ifrane and the rest of Morocco with verified AUI students. Cheaper than a grand taxi, safer than hitching a ride with a stranger.",
+    "Share rides between Ifrane and the rest of Morocco with verified members of the AUI community. Cheaper than a grand taxi, safer than riding with strangers.",
   keywords: [
     "AUI",
     "Al Akhawayn",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AUI Carpool",
     description:
-      "Share rides between Ifrane and the rest of Morocco with verified AUI students.",
+      "Share rides between Ifrane and the rest of Morocco with verified members of the AUI community.",
     type: "website",
   },
 };

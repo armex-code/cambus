@@ -65,7 +65,7 @@ export function buildSeed(): DemoDb {
 
   const profiles: Profile[] = [
     { id: "u-demo", email: "demo@aui.ma", fullName: "Demo Student", phone: "0612000000", bio: "Just here to look around.", createdAt: joined(2) },
-    { id: "u-yassine", email: "y.benali@aui.ma", fullName: "Yassine Benali", phone: "0661234501", bio: "SBA senior. I drive home to Casa most weekends — music requests welcome.", createdAt: joined(28) },
+    { id: "u-yassine", email: "y.benali@aui.ma", fullName: "Yassine Benali", phone: "0661234501", bio: "SBA senior. I drive home to Casa most weekends. Music requests welcome.", createdAt: joined(28) },
     { id: "u-salma", email: "s.elamrani@aui.ma", fullName: "Salma El Amrani", phone: "0661234502", bio: "CS junior. Fès every weekend, always on time.", createdAt: joined(19) },
     { id: "u-omar", email: "o.tazi@aui.ma", fullName: "Omar Tazi", phone: "0661234503", bio: "Engineering grad student. Rabat runs on Fridays.", createdAt: joined(35) },
     { id: "u-aya", email: "a.bennis@aui.ma", fullName: "Aya Bennis", phone: "0661234504", bio: "HRD sophomore, usually riding to Meknès.", createdAt: joined(9) },
@@ -108,7 +108,7 @@ export function buildSeed(): DemoDb {
       id: "r-rabat-fri", driverId: "u-omar",
       fromCity: "Ifrane", fromDetail: "Downtown, near La Paix", toCity: "Rabat", toDetail: "Agdal",
       departureAt: nextWeekday("fri", 17, 30), seatsTotal: 2, pricePerSeat: 120,
-      carModel: "Volkswagen Golf 7", carColor: "Black", notes: "Two seats only — I keep the back seat free for bags.",
+      carModel: "Volkswagen Golf 7", carColor: "Black", notes: "Two seats only, I keep the back seat free for bags.",
       isRecurring: true, recurrenceDays: ["fri"], status: "active", createdAt: daysAgo(25, 8),
     },
     {
@@ -136,7 +136,7 @@ export function buildSeed(): DemoDb {
       id: "r-marrakech", driverId: "u-mehdi",
       fromCity: "Ifrane", fromDetail: "AUI main gate", toCity: "Marrakech", toDetail: "Guéliz",
       departureAt: at(6, 9, 0), seatsTotal: 3, pricePerSeat: 220,
-      carModel: "Fiat Tipo", carColor: "Silver", notes: "Long one — leaving early, lunch stop in Beni Mellal.",
+      carModel: "Fiat Tipo", carColor: "Silver", notes: "Long one. Leaving early, lunch stop in Beni Mellal.",
       isRecurring: false, recurrenceDays: [], status: "active", createdAt: daysAgo(2, 13),
     },
     // Demo user's own ride, with booking requests to manage

@@ -11,8 +11,8 @@ export function SiteFooter() {
           <div className="max-w-xs">
             <Logo dark />
             <p className="mt-3 text-sm leading-relaxed text-pine-300">
-              Rides between Ifrane and the rest of Morocco, shared by verified
-              AUI students. Built by students, for students.
+              Rides between Ifrane and the rest of Morocco, shared by the AUI
+              community: students, staff and faculty.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-10 text-sm">
@@ -24,8 +24,9 @@ export function SiteFooter() {
             </div>
             <div className="space-y-2.5">
               <p className="font-semibold text-paper">Trust</p>
-              <Link href="/safety" className="block hover:text-paper">Safety & rules</Link>
-              <Link href="/login" className="block hover:text-paper">AUI verification</Link>
+              <Link href="/safety" className="block hover:text-paper">Safety and rules</Link>
+              <Link href="/terms" className="block hover:text-paper">General conditions</Link>
+              <Link href="/privacy" className="block hover:text-paper">Data protection</Link>
             </div>
           </div>
         </div>
@@ -33,7 +34,7 @@ export function SiteFooter() {
           <p>
             AUI Carpool is an independent student initiative and is not
             operated by Al Akhawayn University. Payments happen in cash,
-            between students — the platform never touches money.
+            between members. The platform never touches money.
           </p>
         </div>
       </div>

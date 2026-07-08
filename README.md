@@ -1,12 +1,13 @@
 # AUI Carpool
 
-Carpooling for Al Akhawayn University students — rides between Ifrane and the
-rest of Morocco, shared inside the campus community.
+Carpooling for the Al Akhawayn University community (students, staff and
+faculty): rides between Ifrane and the rest of Morocco, shared inside the
+campus community. Every trip starts or ends in Ifrane.
 
 **Why it's different from a taxi or a Facebook post:**
 
-- **Students only.** Accounts require a verified `@aui.ma` email (one-time
-  code, no passwords).
+- **AUI community only.** Accounts require a verified `@aui.ma` email
+  (one-time code, no passwords).
 - **Trust built in.** Two-way ratings: passengers rate drivers, drivers rate
   passengers.
 - **Cheap by design.** Drivers price to split fuel, not to profit — the app
@@ -24,6 +25,8 @@ rest of Morocco, shared inside the campus community.
 - Post-trip **reviews** in both directions, shown on public profiles
 - Driver dashboard (accept/decline, WhatsApp passengers, cancel rides) and
   passenger dashboard (booking status, WhatsApp driver, cancel seat)
+- Rating reminder emails after each trip (Vercel Cron + Resend, optional)
+- General conditions and data protection policy pages (Moroccan law 09-08)
 - Fully responsive with a mobile tab bar
 
 ## Stack
@@ -68,6 +71,24 @@ Open http://localhost:3000 — you're in demo mode.
    ```
 5. Redeploy. The app detects the vars and switches from demo data to Supabase
    automatically.
+
+Want to experiment with a real database but fake content first? After your
+first sign-in, run `supabase/seed.sql` in the SQL editor. It posts sample
+rides and a request under your account so every screen has data. Delete the
+rows (or reset the project) when you go live for real.
+
+### Rating reminder emails
+
+`vercel.json` schedules a daily job (`/api/cron/rate-reminders`) that emails
+every driver and confirmed passenger of the last 24 hours who hasn't left a
+review yet. It stays dormant until you set, in Vercel env vars:
+`SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY` (free at resend.com),
+`EMAIL_FROM`, `CRON_SECRET` and `NEXT_PUBLIC_SITE_URL`. See `.env.example`.
+
+### Homepage photos
+
+Upload `campus.jpg`, `car.jpg` and `booking.jpg` to `public/images/` and the
+homepage picks them up. Details in `public/images/README.md`.
 
 Security model: `@aui.ma`-only sign-up is enforced in the server action *and*
 by a database trigger; phone numbers live behind a security-definer RPC that

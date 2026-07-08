@@ -23,6 +23,9 @@ export function RequestForm() {
   return (
     <form action={action} className="space-y-5">
       <FormError>{state.error}</FormError>
+      <p className="text-xs text-ink-faint">
+        Every trip on AUI Carpool starts or ends in Ifrane.
+      </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="fromCity">From</Label>
@@ -77,7 +80,7 @@ export function RequestForm() {
           placeholder="Luggage, exact area, how flexible you are on time…"
         />
         <FieldHint>
-          Shown publicly with your first name and rating — don't put your
+          Shown publicly with your name and rating, so don't put your
           phone number here.
         </FieldHint>
       </div>
