@@ -8,6 +8,7 @@ import {
   CarFront,
   CheckCircle2,
   Clock,
+  Flag,
   Hourglass,
   Repeat,
   Users,
@@ -184,8 +185,8 @@ export default async function RideDetailPage({
         </div>
 
         {/* Booking column */}
-        <div>
-          <Card className="sticky top-20 p-6">
+        <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+          <Card className="p-6">
             <p className="font-display text-3xl font-semibold text-pine-800">
               {formatMoney(ride.pricePerSeat)}
               <span className="ml-1 text-sm font-normal text-ink-faint">
@@ -250,6 +251,29 @@ export default async function RideDetailPage({
               ) : (
                 <BookingForm rideId={ride.id} maxSeats={Math.min(ride.seatsLeft, 4)} />
               )}
+            </div>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-700">
+                <Flag size={15} />
+              </span>
+              <div>
+                <h2 className="text-sm font-semibold text-ink">
+                  Report this trip
+                </h2>
+                <p className="mt-1 text-xs leading-relaxed text-ink-soft">
+                  Tell us if the ride details look unsafe, misleading, or do
+                  not match AUI Carpool rules.
+                </p>
+                <a
+                  href={`mailto:support@aui-carpool.local?subject=Report ride ${ride.id}`}
+                  className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-red-700 px-4 py-2.5 text-sm font-semibold text-white shadow-card transition-colors hover:bg-red-800"
+                >
+                  Send a report
+                </a>
+              </div>
             </div>
           </Card>
         </div>
