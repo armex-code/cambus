@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #070A08; font-family: "Roboto Mono", monospace; }
+    a { color: #41EA7E; text-decoration: none; }
+    a:hover { color: #7DF2A6; }
+    input[type="range"] { accent-color: #41EA7E; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(2.2); opacity: 0; } }
+    @keyframes march { to { stroke-dashoffset: -19; } }
+    @keyframes screenIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @keyframes putt { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; gap: 40px; padding: 32px; box-sizing: border-box;">
+
+  <!-- Pitch rail -->
+  <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+    <div style="width: 240px; display: flex; flex-direction: column; gap: 5px;">
+      <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; letter-spacing: -1px;">CAMBUS<span style="color: #41EA7E;">_</span></div>
+      <div style="font-size: 10px; color: #8FA096; letter-spacing: 1px; margin-bottom: 14px;">AUI RIDES // PITCH FLOW</div>
+      <sc-for list="{{ railSteps }}" as="step" hint-placeholder-count="9">
+        <div onClick="{{ step.go }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 3px; cursor: pointer; background: {{ step.bg }}; border: 1px solid {{ step.border }};">
+          <div style="font-size: 10px; font-weight: 700; color: {{ step.dotFg }}; width: 18px;">{{ step.n }}</div>
+          <div style="font-size: 12px; font-weight: 600; color: {{ step.fg }}; letter-spacing: 0.5px;">{{ step.label }}</div>
+        </div>
+      </sc-for>
+      <!-- Persona switcher -->
+      <div style="margin-top: 14px; border: 1px dashed #263029; border-radius: 3px; overflow: hidden;">
+        <div style="display: flex; border-bottom: 1px dashed #263029;">
+          <sc-for list="{{ personaTabs }}" as="pt" hint-placeholder-count="3">
+            <div onClick="{{ pt.go }}" style="flex: 1; padding: 8px 0; text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 1px; cursor: pointer; background: {{ pt.bg }}; color: {{ pt.fg }};">{{ pt.label }}</div>
+          </sc-for>
+        </div>
+        <div style="padding: 10px 12px; font-size: 10px; line-height: 1.7; color: #8FA096;">PERSONA: {{ nameUpper }} {{ P.surname }}<br>{{ P.major }} &middot; {{ P.bldg }} &middot; {{ P.homeLine }}<br>{{ P.tagline }}</div>
+      </div>
+      <div style="margin-top: 8px; padding: 8px 12px; font-size: 9px; line-height: 1.7; color: #556058; letter-spacing: 0.5px;">SWITCH PERSONA &mdash; EVERY SCREEN RE-PERSONALIZES: ROUTES, TIMES, HABITS, DRIVERS, NUDGES.<br><span style="color: #41EA7E;">GREEN</span> = CAMBUS AI &middot; <span style="color: #E9C84B;">AMBER</span> = YOUR PEOPLE</div>
+      <div style="margin-top: 10px; padding: 0 12px; color: #41EA7E; font-size: 10px; line-height: 1.3; white-space: pre; animation: putt 1.4s ease-in-out infinite;">  ______
+ /|_||_\`.__
+(   _    _ _\
+=`-(_)--(_)-'</div>
+    </div>
+  </sc-if>
+
+  <!-- Phone -->
+  <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="390px,844px">
+    <div style="position: relative; width: 100%; height: 100%; background: #0E1310; overflow: hidden; font-family: 'Roboto Mono', monospace;">
+
+      <!-- ============ 1. I AM A… ============ -->
+      <sc-if value="{{ showRole }}" hint-placeholder-val="{{ true }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 52px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E;">// CAMBUS &middot; AUI ONLY</div>
+            <div style="font-size: 30px; font-weight: 700; color: #F2F4EF; letter-spacing: -1px; line-height: 1.15;">SALAM,<br>{{ nameUpper }}<span style="color: #41EA7E; animation: blink 1.1s steps(1) infinite;">_</span></div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+              <div style="padding: 4px 8px; border: 1px solid #263029; border-radius: 3px; font-size: 10px; color: #8FA096; letter-spacing: 1px;">{{ P.major }}</div>
+              <div style="padding: 4px 8px; border: 1px solid #263029; border-radius: 3px; font-size: 10px; color: #8FA096; letter-spacing: 1px;">{{ P.bldg }}</div>
+              <div style="padding: 4px 8px; border: 1px solid #263029; border-radius: 3px; font-size: 10px; color: #8FA096; letter-spacing: 1px;">HOME: {{ P.homeLine }}</div>
+            </div>
+            <div style="font-size: 12px; color: #8FA096; line-height: 1.6; margin-top: 6px;">Cambus already knows your campus. Tell it how you ride.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+            <div onClick="{{ goDriver }}" style="padding: 18px; border-radius: 4px; background: #151C17; border: 1px solid #263029; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; flex-direction: column; gap: 3px;">
+                <div style="font-size: 16px; font-weight: 700; color: #F2F4EF; letter-spacing: 0.5px;">&#9678; DRIVER</div>
+                <div style="font-size: 11px; color: #8FA096;">I have a car + empty seats</div>
+              </div>
+              <div style="font-size: 16px; color: #41EA7E;">&rarr;</div>
+            </div>
+            <div onClick="{{ goPrefs }}" style="padding: 18px; border-radius: 4px; background: #41EA7E; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; flex-direction: column; gap: 3px;">
+                <div style="font-size: 16px; font-weight: 700; color: #0A0E0B; letter-spacing: 0.5px;">&#9786;&#xFE0E; PASSENGER</div>
+                <div style="font-size: 11px; color: #0F4526;">I need rides, not planning homework</div>
+              </div>
+              <div style="font-size: 16px; color: #0A0E0B;">&rarr;</div>
+            </div>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; gap: 8px; padding: 11px 12px; border: 1px solid #263029; border-radius: 3px;">
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: #41EA7E;"></div>
+            <div style="font-size: 10.5px; color: #8FA096; letter-spacing: 0.5px;">VERIFIED &middot; {{ P.email }} &middot; STUDENTS + STAFF ONLY</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 2. PREFERENCE BUBBLES ============ -->
+      <sc-if value="{{ showPrefs }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 44px;">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E;">// 01 &middot; WHAT MATTERS</div>
+            <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 8px; line-height: 1.2;">CHECK ALL THAT<br>MATTER TO YOU</div>
+            <div style="font-size: 11.5px; color: #8FA096; margin-top: 8px; line-height: 1.6;">{{ prefsSub }}</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px;">
+            <sc-for list="{{ prefList }}" as="p" hint-placeholder-count="10">
+              <div onClick="{{ p.toggle }}" style="padding: 9px 13px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; background: {{ p.bg }}; color: {{ p.fg }}; border: 1px solid {{ p.border }}; letter-spacing: 0.3px;">{{ p.label }}</div>
+            </sc-for>
+          </div>
+          <div onClick="{{ goVibe }}" style="margin-top: auto; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">CONTINUE &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 3. DESCRIBE YOURSELF ============ -->
+      <sc-if value="{{ showVibe }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 44px;">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E;">// 02 &middot; VIBE CHECK</div>
+            <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 8px;">DESCRIBE YOURSELF</div>
+            <div style="font-size: 11.5px; color: #8FA096; margin-top: 8px; line-height: 1.6;">Used only to match the vibe in the car. Never shown publicly.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 26px; margin-top: 34px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: #B9C4BC; letter-spacing: 1px;"><span>&#9790;&#xFE0E; INTROVERT</span><span>&#9788;&#xFE0E; EXTROVERT</span></div>
+              <input type="range" min="0" max="100" value="{{ intro }}" onChange="{{ setIntro }}" style="width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: #B9C4BC; letter-spacing: 1px;"><span>&#9636; PLANNER</span><span>&#10023; SPONTANEOUS</span></div>
+              <input type="range" min="0" max="100" value="{{ plan }}" onChange="{{ setPlan }}" style="width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: #B9C4BC; letter-spacing: 1px;"><span>&#9833; QUIET RIDE</span><span>&#9834; CHATTY RIDE</span></div>
+              <input type="range" min="0" max="100" value="{{ chatty }}" onChange="{{ setChatty }}" style="width: 100%;" />
+            </div>
+          </div>
+          <div style="margin-top: 26px; padding: 13px 14px; border: 1px dashed #2E5C44; border-radius: 3px; font-size: 11.5px; color: #7DF2A6; line-height: 1.6;">{{ vibeSummary }}</div>
+          <div onClick="{{ goHome }}" style="margin-top: auto; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">FIND MY RIDES &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 4. HOME / MAP (KEY SCREEN, A/B) ============ -->
+      <sc-if value="{{ showHome }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column;">
+          <!-- Map -->
+          <div style="position: relative; flex: 1; background: #101711; overflow: hidden;">
+            <svg viewBox="0 0 390 440" style="position: absolute; inset: 0; width: 100%; height: 100%;" preserveAspectRatio="xMidYMid slice">
+              <polyline points="0,120 130,110 200,140 390,130" fill="none" stroke="#1C2620" stroke-width="14"></polyline>
+              <polyline points="60,0 80,180 60,320 90,440" fill="none" stroke="#1C2620" stroke-width="10"></polyline>
+              <polyline points="390,300 240,290 150,340 0,330" fill="none" stroke="#1C2620" stroke-width="12"></polyline>
+              <polyline points="300,0 290,150 320,290" fill="none" stroke="#1C2620" stroke-width="8"></polyline>
+              <polyline points="80,400 150,340 240,290 290,150 200,140 130,110" fill="none" stroke="#41EA7E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 12 7; animation: march 1s linear infinite;"></polyline>
+              <circle cx="80" cy="400" r="7" fill="#41EA7E"></circle>
+              <circle cx="130" cy="110" r="9" fill="#F2F4EF"></circle>
+              <circle cx="130" cy="110" r="4" fill="#0A0E0B"></circle>
+            </svg>
+            <div style="position: absolute; left: 74px; top: 394px; width: 12px; height: 12px; border-radius: 50%; background: #41EA7E; animation: pulse 1.6s ease-out infinite;"></div>
+            <div style="position: absolute; left: 96px; top: 392px; padding: 3px 7px; border-radius: 3px; background: #0A0E0B; border: 1px solid #2E5C44; color: #7DF2A6; font-size: 8.5px; font-weight: 700; letter-spacing: 1px;">YOU &middot; GATE 2</div>
+            <div style="position: absolute; left: 146px; top: 100px; padding: 3px 7px; border-radius: 3px; background: #F2F4EF; color: #0A0E0B; font-size: 8.5px; font-weight: 700; letter-spacing: 1px;">{{ P.code }}</div>
+            <div style="position: absolute; left: 150px; top: 210px; width: 24px; height: 14px; background: #F2F4EF; border-radius: 3px;"></div>
+            <div style="position: absolute; left: 265px; top: 120px; width: 24px; height: 14px; background: #F2F4EF; border-radius: 3px;"></div>
+            <div style="position: absolute; top: 58px; left: 20px; padding: 6px 12px; border-radius: 3px; background: #41EA7E; color: #0A0E0B; font-size: 12px; font-weight: 700; letter-spacing: 1px;">{{ P.eta }}</div>
+            <div onClick="{{ goNotifs }}" style="position: absolute; top: 52px; right: 20px; width: 38px; height: 38px; border-radius: 4px; background: #151C17; border: 1px solid #263029; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+              <div style="position: relative; width: 16px; height: 16px; border: 2px solid #F2F4EF; border-radius: 50% 50% 3px 3px; border-bottom: none;">
+                <div style="position: absolute; right: -6px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #41EA7E; border: 2px solid #101711;"></div>
+              </div>
+            </div>
+            <!-- A/B switch -->
+            <div style="position: absolute; bottom: 14px; right: 20px; display: flex; background: #151C17; border: 1px solid #263029; border-radius: 3px; padding: 2px;">
+              <div onClick="{{ setVarA }}" style="padding: 5px 9px; border-radius: 2px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: {{ varABg }}; color: {{ varAFg }};">A &middot; PREDICT</div>
+              <div onClick="{{ setVarB }}" style="padding: 5px 9px; border-radius: 2px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: {{ varBBg }}; color: {{ varBFg }};">B &middot; HABITS</div>
+            </div>
+          </div>
+          <!-- Bottom sheet -->
+          <div style="background: #0E1310; border-top: 1px solid #263029; position: relative; padding: 12px 20px 22px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <div style="font-size: 10px; letter-spacing: 2px; color: #8FA096;">{{ P.nowLine }}</div>
+              <div style="font-size: 10px; letter-spacing: 1px; color: #41EA7E;">GATE 2 &middot; ONLINE</div>
+            </div>
+            <div onClick="{{ goSchedule }}" style="display: flex; align-items: center; gap: 10px; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029; cursor: pointer;">
+              <div style="font-size: 13px; color: #41EA7E; font-weight: 700;">&gt;</div>
+              <div style="font-size: 14px; font-weight: 500; color: #8FA096;">Where to, {{ P.name }}?</div>
+              <div style="width: 8px; height: 16px; background: #41EA7E; margin-left: -6px; animation: blink 1.1s steps(1) infinite;"></div>
+            </div>
+
+            <!-- Variant A: proactive AI ticket -->
+            <sc-if value="{{ isVarA }}" hint-placeholder-val="{{ true }}">
+              <div style="border: 1px solid #2E5C44; border-radius: 4px; background: #121A14; overflow: hidden;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: #16241B;">
+                  <div style="font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #41EA7E;">CAMBUS.AI &middot; PREDICTED</div>
+                  <div style="font-size: 9.5px; color: #8FA096; letter-spacing: 0.5px;">FROM YOUR {{ P.learnedFrom }}</div>
+                </div>
+                <div style="padding: 13px 14px; display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: #41EA7E; flex-shrink: 0;"></div>
+                    <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px;">IFR</div>
+                    <div style="flex: 1; border-top: 1px dashed #3A4A40; position: relative;"><div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #41EA7E; background: #121A14; padding: 0 6px; white-space: nowrap;">{{ P.departLabel }}</div></div>
+                    <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px;">{{ P.code }}</div>
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: #F2F4EF; flex-shrink: 0;"></div>
+                  </div>
+                  <div style="font-size: 11.5px; color: #B9C4BC; line-height: 1.65;">{{ P.aiBody }}</div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <sc-for list="{{ chipList }}" as="c" hint-placeholder-count="3">
+                      <div style="padding: 3px 8px; border: 1px solid #2E5C44; border-radius: 999px; font-size: 9.5px; color: #7DF2A6; letter-spacing: 0.5px;">{{ c.t }}</div>
+                    </sc-for>
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    <div onClick="{{ goSchedule }}" style="flex: 1; padding: 11px; border-radius: 3px; background: #41EA7E; color: #0A0E0B; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">BOOK MY USUAL</div>
+                    <div style="padding: 11px 12px; border-radius: 3px; border: 1px solid #263029; color: #8FA096; font-size: 12px; font-weight: 600; cursor: pointer;">SKIP WK</div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- Variant B: habits board -->
+            <sc-if value="{{ isVarB }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="font-size: 10px; font-weight: 700; color: #F2F4EF; letter-spacing: 2px;">{{ nameUpper }}&rsquo;S HABITS &middot; AUTO-BOOK</div>
+                  <div style="font-size: 9.5px; color: #8FA096;">LEARNED, NOT ASKED</div>
+                </div>
+                <sc-for list="{{ habits }}" as="h" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="font-size: 12.5px; font-weight: 700; color: #F2F4EF; letter-spacing: 0.3px;">{{ h.title }}</div>
+                      <div style="font-size: 10px; color: #8FA096; letter-spacing: 0.3px;">{{ h.sub }}</div>
+                    </div>
+                    <div onClick="{{ h.toggle }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ h.togBg }}; position: relative; cursor: pointer; flex-shrink: 0;">
+                      <div style="position: absolute; top: 3px; left: {{ h.knobLeft }}; width: 18px; height: 18px; border-radius: 50%; background: #0A0E0B; transition: left 0.15s;"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div onClick="{{ goSchedule }}" style="display: flex; align-items: center; gap: 10px; padding: 2px 2px; cursor: pointer;">
+              <div style="font-size: 11px; color: #41EA7E;">&#8962;</div>
+              <div style="font-size: 11.5px; color: #B9C4BC; letter-spacing: 0.3px;">HOME &middot; {{ P.homeLineFull }}</div>
+              <div style="font-size: 9.5px; color: #556058; margin-left: auto;">SAVED</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 5. SCHEDULE FORM ============ -->
+      <sc-if value="{{ showSchedule }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; overflow-y: auto;">
+          <div onClick="{{ goHome }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; BACK</div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E; margin-top: 12px;">// BOOKING</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">CARPOOLING IN IFRANE</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
+            <div style="padding: 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 1.5px;">ROUTE</div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #41EA7E; flex-shrink: 0;"></div>
+                <div style="font-size: 20px; font-weight: 700; color: #F2F4EF;">IFR</div>
+                <div style="flex: 1; border-top: 1px dashed #3A4A40; position: relative;"><div style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); color: #41EA7E; font-size: 11px; background: #151C17; padding: 0 5px;">&rarr;</div></div>
+                <div style="font-size: 20px; font-weight: 700; color: #F2F4EF;">{{ P.code }}</div>
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #F2F4EF; flex-shrink: 0;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #8FA096; margin-top: 4px;"><span>AUI GATE 2</span><span>{{ P.area }}</span></div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 1; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+                <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 1.5px;">DEPART</div>
+                <div style="font-size: 16px; font-weight: 700; color: #F2F4EF; margin-top: 4px;">{{ P.departLabel }}</div>
+                <div style="font-size: 9.5px; color: #41EA7E; margin-top: 2px;">{{ P.classRef }} ENDS {{ P.classEnd }} &#10003;</div>
+              </div>
+              <div style="flex: 1; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029; opacity: {{ returnOpacity }};">
+                <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 1.5px;">RETURN</div>
+                <div style="font-size: 16px; font-weight: 700; color: #F2F4EF; margin-top: 4px;">{{ P.returnLabel }}</div>
+                <div style="font-size: 9.5px; color: #8FA096; margin-top: 2px;">{{ P.returnSub }}</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 12.5px; font-weight: 700; color: #F2F4EF; letter-spacing: 0.5px;">TWO-WAY TRIP</div>
+              <div onClick="{{ toggleTwoWay }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ twoWayBg }}; position: relative; cursor: pointer;">
+                <div style="position: absolute; top: 3px; left: {{ twoWayKnob }}; width: 18px; height: 18px; border-radius: 50%; background: #0A0E0B; transition: left 0.15s;"></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div onClick="{{ payApple }}" style="flex: 1; padding: 12px; border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; background: {{ payAppleBg }}; color: {{ payAppleFg }}; border: 1px solid {{ payAppleBorder }}; letter-spacing: 0.5px;">APPLE PAY</div>
+              <div onClick="{{ payCash }}" style="flex: 1; padding: 12px; border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; background: {{ payCashBg }}; color: {{ payCashFg }}; border: 1px solid {{ payCashBorder }}; letter-spacing: 0.5px;">CASH</div>
+            </div>
+            <div style="padding: 11px 13px; border: 1px dashed #2E5C44; border-radius: 3px; font-size: 10.5px; color: #7DF2A6; line-height: 1.7; letter-spacing: 0.3px;">{{ P.fareLine }}</div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 20px; padding-bottom: 8px;">
+            <div onClick="{{ goApproved }}" style="flex: 1; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">SCHEDULE LATER</div>
+            <div onClick="{{ goApproved }}" style="flex: 1; padding: 15px; border-radius: 4px; background: #F2F4EF; color: #0A0E0B; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">PICK UP NOW</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 6. RIDE APPROVED (ticket) ============ -->
+      <sc-if value="{{ showApproved }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 56px; text-align: center;">
+            <div style="font-size: 10px; letter-spacing: 3px; color: #41EA7E;">&#10003; CONFIRMED</div>
+            <div style="font-size: 26px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">RIDE LOCKED</div>
+          </div>
+          <!-- Ticket -->
+          <div style="margin-top: 22px; position: relative; background: #F2F4EF; border-radius: 6px; overflow: hidden;">
+            <div style="padding: 16px 18px 12px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 9px; height: 9px; border-radius: 50%; background: #0E8A57; flex-shrink: 0;"></div>
+                <div style="font-size: 28px; font-weight: 700; color: #0A0E0B; letter-spacing: -1px;">IFR</div>
+                <div style="flex: 1; border-top: 1.5px dashed #B9C0B7; position: relative;"><div style="position: absolute; top: -7px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 700; color: #0E8A57; background: #F2F4EF; padding: 0 6px; white-space: nowrap;">{{ P.departLabel }}</div></div>
+                <div style="font-size: 28px; font-weight: 700; color: #0A0E0B; letter-spacing: -1px;">{{ P.code }}</div>
+                <div style="width: 9px; height: 9px; border-radius: 50%; background: #0A0E0B; flex-shrink: 0;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #5A6159; letter-spacing: 1px; margin-top: 2px;"><span>AUI GATE 2</span><span>{{ P.area }}</span></div>
+            </div>
+            <div style="position: relative; margin: 6px 0;">
+              <div style="border-top: 2px dashed #C9D0C7;"></div>
+              <div style="position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: #0E1310;"></div>
+              <div style="position: absolute; right: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: #0E1310;"></div>
+            </div>
+            <div style="padding: 12px 18px 16px; display: flex; align-items: center; gap: 12px;">
+              <div style="width: 46px; height: 46px; border-radius: 4px; background: #0A0E0B; color: #41EA7E; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700;">{{ P.driverInitial }}</div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-size: 13px; font-weight: 700; color: #0A0E0B; letter-spacing: 0.3px;">{{ P.driverLine1 }}</div>
+                <div style="font-size: 10px; color: #5A6159; letter-spacing: 0.3px;">{{ P.driverLine2 }}</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 9px; color: #5A6159; letter-spacing: 1px;">SEAT</div>
+                <div style="font-size: 18px; font-weight: 700; color: #0A0E0B;">{{ P.seat }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <div style="flex: 1; padding: 12px; border-radius: 4px; border: 1px solid #263029; text-align: center; font-size: 11px; font-weight: 700; color: #F2F4EF; cursor: pointer; letter-spacing: 0.5px;">MESSAGE</div>
+            <div style="flex: 1; padding: 12px; border-radius: 4px; border: 1px solid #263029; text-align: center; font-size: 11px; font-weight: 700; color: #F2F4EF; cursor: pointer; letter-spacing: 0.5px;">SHARE LIVE</div>
+            <div style="flex: 1; padding: 12px; border-radius: 4px; border: 1px solid #4A2A26; text-align: center; font-size: 11px; font-weight: 700; color: #E86A5C; cursor: pointer; letter-spacing: 0.5px;">REPORT</div>
+          </div>
+          <div style="margin-top: 12px; padding: 11px 13px; border: 1px dashed #2E5C44; border-radius: 3px; font-size: 10.5px; color: #7DF2A6; line-height: 1.7;">{{ P.stopNote }}</div>
+          <div onClick="{{ goRate }}" style="margin-top: auto; padding: 15px; border-radius: 4px; border: 1px solid #41EA7E; color: #41EA7E; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">SIMULATE TRIP COMPLETE &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 7. RATE YOUR DRIVER ============ -->
+      <sc-if value="{{ showRate }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 56px; text-align: center;">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E;">// TRIP COMPLETE &middot; {{ P.arriveTime }}</div>
+            <div style="font-size: 24px; font-weight: 700; color: #F2F4EF; margin-top: 8px;">RATE {{ P.driverFirst }}</div>
+            <div style="font-size: 11px; color: #8FA096; margin-top: 4px; letter-spacing: 0.5px;">{{ P.rateSub }}</div>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 10px; margin-top: 24px;">
+            <sc-for list="{{ starList }}" as="s" hint-placeholder-count="5">
+              <div onClick="{{ s.set }}" style="font-size: 34px; cursor: pointer; color: {{ s.color }}; line-height: 1; transition: transform 0.15s;" style-hover="transform: scale(1.25)">&#9733;</div>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 22px;">
+            <sc-for list="{{ tagList }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.toggle }}" style="padding: 8px 13px; border-radius: 999px; font-size: 11px; font-weight: 600; cursor: pointer; background: {{ t.bg }}; color: {{ t.fg }}; border: 1px solid {{ t.border }}; letter-spacing: 0.5px;">{{ t.label }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 18px; border: 1px solid #5C4A1E; border-radius: 4px; background: #1A160D; padding: 12px 14px; display: flex; flex-direction: column; gap: 9px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; color: #E9C84B;">&#9742;&#xFE0E; NICE CHAT? SWAP CONTACTS</div>
+              <div style="position: relative; width: 8px; height: 8px;">
+                <div style="position: absolute; inset: 0; border-radius: 50%; background: #E9C84B;"></div>
+                <div style="position: absolute; inset: 0; border-radius: 50%; background: #E9C84B; animation: pulse 1.6s ease-out infinite;"></div>
+              </div>
+            </div>
+            <div style="font-size: 10px; color: #8FA096; line-height: 1.6;">AirDrop-style &mdash; contact is shared only if both of you tap.</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <sc-for list="{{ swapList }}" as="w" hint-placeholder-count="3">
+                <div onClick="{{ w.tap }}" style="padding: 8px 12px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: {{ w.bg }}; color: {{ w.fg }}; border: 1px solid {{ w.border }};">{{ w.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029; min-height: 64px; font-size: 12px; color: #556058;">&gt; add a note (optional)_</div>
+          <div onClick="{{ goNotifs }}" style="margin-top: auto; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">SUBMIT &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 8. NOTIFICATIONS ============ -->
+      <sc-if value="{{ showNotifs }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div onClick="{{ goHome }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; HOME</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; margin-top: 10px; letter-spacing: -0.5px;">FOR YOU, {{ nameUpper }}</div>
+          <div style="font-size: 10px; color: #8FA096; letter-spacing: 1px; margin-top: 4px;">TIMED TO YOUR CALENDAR &mdash; NOT BLASTED TO EVERYONE</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px;">
+            <div style="padding: 14px; border-radius: 4px; background: #121A14; border: 1px solid #2E5C44; display: flex; flex-direction: column; gap: 9px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; color: #41EA7E;">CAMBUS.AI &middot; 2H AGO</div>
+                <div style="width: 7px; height: 7px; border-radius: 50%; background: #41EA7E;"></div>
+              </div>
+              <div style="font-size: 12.5px; font-weight: 600; color: #F2F4EF; line-height: 1.6;">{{ P.notifMain }}</div>
+              <div onClick="{{ goSchedule }}" style="align-self: flex-start; padding: 9px 16px; border-radius: 3px; background: #41EA7E; color: #0A0E0B; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px;">BOOK RIDE &rarr;</div>
+            </div>
+            <sc-for list="{{ notifExtra }}" as="nx" hint-placeholder-count="2">
+              <div style="padding: 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; color: #8FA096;">{{ nx.when }}</div>
+                <div style="font-size: 12.5px; font-weight: 600; color: #B9C4BC; line-height: 1.6;">{{ nx.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div onClick="{{ goDna }}" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 13px; margin-top: 12px; border: 1px dashed #263029; border-radius: 4px; cursor: pointer;">
+            <div style="font-size: 10.5px; font-weight: 700; color: #8FA096; letter-spacing: 1px;">WHY THESE? SEE WHAT CAMBUS KNOWS</div>
+            <div style="font-size: 12px; color: #41EA7E;">&rarr;</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 10. MY RIDE DNA ============ -->
+      <sc-if value="{{ showDna }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; overflow-y: auto;">
+          <div onClick="{{ goNotifs }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; FOR YOU</div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E; margin-top: 12px;">// TRANSPARENCY</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">{{ nameUpper }}&rsquo;S RIDE DNA</div>
+          <div style="font-size: 11px; color: #8FA096; margin-top: 6px; line-height: 1.6;">Everything Cambus learned. Visible, explained, deletable.</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+            <sc-for list="{{ dnaList }}" as="d" hint-placeholder-count="5">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 13px; border-radius: 4px; background: #151C17; border: 1px solid #263029; opacity: {{ d.op }};">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 5px;">
+                  <div style="font-size: 12px; font-weight: 700; color: #F2F4EF; letter-spacing: 0.3px;">{{ d.title }}</div>
+                  <div style="font-size: 9px; color: #8FA096; letter-spacing: 0.5px;">{{ d.why }}</div>
+                  <div style="height: 3px; border-radius: 2px; background: #263029; width: 100%;"><div style="height: 3px; border-radius: 2px; background: #41EA7E; width: {{ d.confW }}; transition: width 0.3s;"></div></div>
+                </div>
+                <div onClick="{{ d.toggle }}" style="padding: 6px 10px; border-radius: 3px; border: 1px solid {{ d.btnBorder }}; color: {{ d.btnFg }}; font-size: 9px; font-weight: 700; letter-spacing: 1px; cursor: pointer; flex-shrink: 0;">{{ d.btn }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 12px; padding: 11px 13px; border: 1px dashed #263029; border-radius: 3px; font-size: 9.5px; color: #8FA096; line-height: 1.8; letter-spacing: 0.5px;">NEVER COLLECTED: GRADES &middot; GPA &middot; LOCATION OUTSIDE TRIPS &middot; YOUR MESSAGES</div>
+          <div onClick="{{ goTuned }}" style="margin-top: 16px; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">NEXT RIDE, TUNED &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 11. RIDE, TUNED ============ -->
+      <sc-if value="{{ showTuned }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; overflow-y: auto;">
+          <div onClick="{{ goDna }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; MY DNA</div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E; margin-top: 12px;">// NEXT RIDE &middot; {{ P.departLabel }}</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">TUNED FOR {{ nameUpper }}</div>
+          <div style="margin-top: 16px; border: 1px solid #2E5C44; border-radius: 4px; background: #121A14; padding: 12px 14px; display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; color: #41EA7E;">{{ P.weather.tag }}</div>
+            <div style="font-size: 11.5px; color: #B9C4BC; line-height: 1.65;">{{ P.weather.text }}</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 12px;">
+            <sc-for list="{{ tunedRows }}" as="t" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 12px; font-weight: 700; color: #F2F4EF; letter-spacing: 0.3px;">{{ t.title }}</div>
+                  <div style="font-size: 9.5px; color: #8FA096; letter-spacing: 0.3px;">{{ t.sub }}</div>
+                </div>
+                <div onClick="{{ t.toggle }}" style="width: 42px; height: 24px; border-radius: 12px; background: {{ t.togBg }}; position: relative; cursor: pointer; flex-shrink: 0;">
+                  <div style="position: absolute; top: 3px; left: {{ t.knobLeft }}; width: 18px; height: 18px; border-radius: 50%; background: #0A0E0B; transition: left 0.15s;"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 2px;">CABIN AUDIO</div>
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
+              <sc-for list="{{ audioOpts }}" as="a" hint-placeholder-count="4">
+                <div onClick="{{ a.set }}" style="flex: 1; padding: 9px 4px; border-radius: 3px; text-align: center; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: {{ a.bg }}; color: {{ a.fg }}; border: 1px solid {{ a.border }}; white-space: nowrap;">{{ a.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-top: 12px; padding: 11px 13px; border: 1px dashed #2E5C44; border-radius: 3px; font-size: 10.5px; color: #7DF2A6; line-height: 1.7;">{{ P.trunkNote }}</div>
+          <div onClick="{{ goSemester }}" style="margin-top: 16px; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">MY SEMESTER &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 12. SEMESTER ============ -->
+      <sc-if value="{{ showSemester }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div onClick="{{ goTuned }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; TUNED</div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E; margin-top: 12px;">// SPRING &rsquo;26 IN RIDES</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">{{ nameUpper }}&rsquo;S SEMESTER</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px;">
+            <div style="padding: 16px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 30px; font-weight: 700; color: #41EA7E; letter-spacing: -1px; line-height: 1;">{{ P.semester.trips }}</div>
+              <div style="font-size: 9px; color: #8FA096; letter-spacing: 1.5px; margin-top: 6px;">&#8644; TRIPS SHARED</div>
+            </div>
+            <div style="padding: 16px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 30px; font-weight: 700; color: #41EA7E; letter-spacing: -1px; line-height: 1;">{{ P.semester.saved }}</div>
+              <div style="font-size: 9px; color: #8FA096; letter-spacing: 1.5px; margin-top: 6px;">&#164; MAD SAVED VS TAXI</div>
+            </div>
+            <div style="padding: 16px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 30px; font-weight: 700; color: #41EA7E; letter-spacing: -1px; line-height: 1;">{{ P.semester.co2 }}</div>
+              <div style="font-size: 9px; color: #8FA096; letter-spacing: 1.5px; margin-top: 6px;">&#10048; KG CO&#8322; AVOIDED</div>
+            </div>
+            <div style="padding: 16px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+              <div style="font-size: 30px; font-weight: 700; color: #E9C84B; letter-spacing: -1px; line-height: 1;">{{ P.semester.streak }}</div>
+              <div style="font-size: 9px; color: #8FA096; letter-spacing: 1.5px; margin-top: 6px;">&#9829;&#xFE0E; WEEK CREW STREAK</div>
+            </div>
+          </div>
+          <div style="margin-top: 12px; padding: 13px 14px; border-radius: 4px; background: #151C17; border: 1px solid #263029;">
+            <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 1.5px;">TOP ROUTE</div>
+            <div style="font-size: 13px; font-weight: 700; color: #F2F4EF; margin-top: 4px; letter-spacing: 0.3px;">{{ P.semester.topLabel }}</div>
+            <div style="font-size: 10px; color: #E9C84B; margin-top: 3px; letter-spacing: 0.3px;">{{ P.semester.crew }}</div>
+          </div>
+          <div style="margin-top: 12px; padding: 11px 13px; border: 1px dashed #2E5C44; border-radius: 3px; font-size: 10.5px; color: #7DF2A6; line-height: 1.7;">{{ P.semester.fact }}</div>
+          <div onClick="{{ goHome }}" style="margin-top: auto; padding: 15px; border-radius: 4px; border: 1px solid #41EA7E; color: #41EA7E; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">BACK TO HOME &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 9. BECOME A DRIVER ============ -->
+      <sc-if value="{{ showDriver }}" hint-placeholder-val="{{ false }}">
+        <div style="animation: screenIn 0.3s ease-out; position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div onClick="{{ goRole }}" style="margin-top: 42px; font-size: 11px; font-weight: 700; color: #41EA7E; cursor: pointer; letter-spacing: 1px;">&larr; BACK</div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #41EA7E; margin-top: 12px;">// DRIVER MODE</div>
+          <div style="font-size: 22px; font-weight: 700; color: #F2F4EF; letter-spacing: -0.5px; margin-top: 6px;">POST YOUR RIDE</div>
+          <div style="font-size: 11.5px; color: #8FA096; margin-top: 8px; line-height: 1.6;">{{ P.regularsLine }}</div>
+          <div style="margin-top: 28px; padding: 22px; border-radius: 4px; background: #151C17; border: 1px solid #263029; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="font-size: 9.5px; font-weight: 700; color: #8FA096; letter-spacing: 2px;">AVG FARE &middot; IFR &rarr; {{ P.code }}</div>
+            <div style="display: flex; align-items: center; gap: 22px;">
+              <div onClick="{{ fareDown }}" style="width: 46px; height: 46px; border-radius: 4px; border: 1px solid #263029; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #F2F4EF; cursor: pointer;">&minus;5</div>
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="font-size: 46px; font-weight: 700; color: #41EA7E; letter-spacing: -2px; line-height: 1;">{{ fare }}</div>
+                <div style="font-size: 10px; color: #8FA096; letter-spacing: 1.5px; margin-top: 4px;">MAD / SEAT</div>
+              </div>
+              <div onClick="{{ fareUp }}" style="width: 46px; height: 46px; border-radius: 4px; border: 1px solid #263029; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #F2F4EF; cursor: pointer;">+5</div>
+            </div>
+            <div style="padding: 9px 13px; border-radius: 3px; border: 1px dashed {{ fareHintBorder }}; font-size: 10.5px; color: {{ fareHintFg }}; text-align: center; line-height: 1.6; letter-spacing: 0.3px;">{{ fareHint }}</div>
+          </div>
+          <div onClick="{{ goHome }}" style="margin-top: auto; padding: 15px; border-radius: 4px; background: #41EA7E; color: #0A0E0B; font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; letter-spacing: 1px;">POST MY RIDE &rarr;</div>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1150, &quot;height&quot;: 940}, &quot;persona&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Salma&quot;, &quot;Omar&quot;, &quot;Aya&quot;], &quot;default&quot;: &quot;Salma&quot;, &quot;tsType&quot;: &quot;\&quot;Salma\&quot; | \&quot;Omar\&quot; | \&quot;Aya\&quot;&quot;, &quot;section&quot;: &quot;Persona&quot;}, &quot;keyVariant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;default&quot;: &quot;A&quot;, &quot;tsType&quot;: &quot;\&quot;A\&quot; | \&quot;B\&quot;&quot;, &quot;section&quot;: &quot;Key screen&quot;}, &quot;showPitchRail&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Presentation&quot;}}">
+class Component extends DCLogic {
+  personas = {
+    salma: {
+      name: "Salma", surname: "EL AMRANI", email: "s.elamrani@aui.ma",
+      major: "SSE \u201927", bldg: "BLDG 8", area: "MAARIF",
+      homeLine: "MAARIF, CASA", homeLineFull: "MAARIF, CASABLANCA",
+      tagline: "NO CAR \u00b7 NO TIME TO PLAN",
+      code: "CASA", destFull: "CASA",
+      eta: "1H50", nowLine: "THU \u00b7 MAY 07 \u00b7 21:42",
+      departLabel: "FRI 17:00", classRef: "CSC 3324", classEnd: "16:00",
+      returnLabel: "SUN 18:30", returnSub: "BACK FOR MON 08:00",
+      learnedFrom: "LAST 6 TRIPS",
+      aiBody: "It\u2019s Thursday. Your usual ride home leaves tomorrow \u2014 1h after CSC 3324 ends. Friday dinner crew notified you\u2019re leaving.",
+      chips: ["3 MATCHES", "2 SSE RIDERS", "1 FROM MAARIF"],
+      habits: [
+        { key: "fri", title: "FRI 17:00 \u00b7 IFR \u2192 CASA", sub: "EVERY WEEK \u00b7 LAST BOOKED APR 03", on: true },
+        { key: "dinner", title: "FRI 19:30 \u00b7 DINNER W/ FRIENDS", sub: "DOWNTOWN \u00b7 RIDE BACK BY 23:00", on: true },
+        { key: "sun", title: "SUN 18:30 \u00b7 RETURN TO AUI", sub: "AUTO-BOOK WHEN MATCH FOUND", on: false }
+      ],
+      prefOn: ["safety", "applepay", "luxury"],
+      vibe: [65, 25, 60], pay: "applepay",
+      fare: 85, fairMin: 75, fairMax: 95,
+      fareLine: "FAIR SPLIT: 85 MAD/SEAT \u00b7 4 RIDERS \u00b7 APPLE PAY OK \u00b7 DROP-OFF 10 MIN FROM YOUR DOOR",
+      regularsLine: "Your Friday Casa run has 3 regulars waiting. Set the seat price.",
+      driverInitial: "Y", driverFirst: "YASMINE",
+      driverLine1: "YASMINE B. \u00b7 4.9\u2605",
+      driverLine2: "SSE SENIOR \u00b7 ALSO FROM MAARIF \u00b7 DACIA DUSTER",
+      seat: "3/4", arriveTime: "18:52",
+      rateSub: "IFR \u2192 CASA \u00b7 FRI 17:00 \u00b7 85 MAD",
+      stopNote: "COFFEE STOP \u00b7 KHEMISSET SERVICE AREA \u00b7 ~10 MIN \u2014 your usual. Trip shared live with Mama\u2019s phone.",
+      notifMain: "BLDG 8 checkout is FRI 12:00. 14 of 22 Casa seats already gone \u2014 book yours.",
+      notifExtra: [
+        { when: "YESTERDAY", text: "Your last final (CSC 3324) ends THU 14:00. Want your Casa ride moved up to 15:00?" },
+        { when: "FRIDAY", text: "Dinner downtown tonight? Last ride back to Gate 2 leaves 23:00." }
+      ],
+      dna: [
+        { title: "FRI 17:00 \u00b7 IFR \u2192 CASA", why: "SEEN 6\u00d7 \u00b7 LAST APR 03", conf: 92 },
+        { title: "COFFEE STOP \u00b7 KHEMISSET", why: "5 OF 6 TRIPS", conf: 85 },
+        { title: "FRONT SEAT \u00b7 MOTION SICKNESS", why: "YOU SWITCHED SEATS 4\u00d7", conf: 74 },
+        { title: "FRIDAY DINNER CREW", why: "7 FRIDAYS RUNNING", conf: 88 },
+        { title: "APPLE PAY, ALWAYS", why: "14 OF 14 PAYMENTS", conf: 100 }
+      ],
+      weather: { tag: "RAIN \u00b7 FRI 16:40 \u00b7 IFRANE", text: "Rain at pickup. Your walk from Bldg 8 is moved under the Gate 2 canopy \u2014 Yasmine pulls up at the arch instead." },
+      tunedToggles: [
+        { key: "wake", title: "WAKE ME AT MY STOP", sub: "BUZZ 10 MIN BEFORE MAARIF", on: true },
+        { key: "front", title: "FRONT SEAT HOLD", sub: "MOTION SICKNESS \u00b7 AUTO-RESERVED", on: true },
+        { key: "ramadan", title: "RAMADAN MODE", sub: "AUTO IN FEB \u00b7 ARRIVE BEFORE IFTAR", on: false }
+      ],
+      audioDefault: "BLEND",
+      swap: [
+        { k: "y", name: "YASMINE", label: "YASMINE · DRIVER" },
+        { k: "r", name: "RIM", label: "RIM · SSE ’27" },
+        { k: "kz", name: "KENZA", label: "KENZA · BLDG 4" }
+      ],
+      trunkNote: "CHECKOUT FRI: 1 LARGE SUITCASE DETECTED FROM YOUR BOOKING \u2014 DUSTER TRUNK FITS IT \u2713",
+      semester: { trips: 14, saved: 610, co2: 38, streak: 7, topLabel: "IFR \u21c4 CASA \u00b7 11 OF 14 TRIPS", crew: "YOUR CREW: YASMINE \u00b7 RIM \u00b7 +1", fact: "You\u2019ve never missed a Friday dinner \u2014 Cambus books your ride around it." }
+    },
+    omar: {
+      name: "Omar", surname: "BENJELLOUN", email: "o.benjelloun@aui.ma",
+      major: "BBA \u201926", bldg: "BLDG 36", area: "AGDAL",
+      homeLine: "AGDAL, RABAT", homeLineFull: "AGDAL, RABAT",
+      tagline: "SPONTANEOUS \u00b7 PAYS CASH",
+      code: "RBA", destFull: "RABAT",
+      eta: "1H10", nowLine: "WED \u00b7 MAY 06 \u00b7 22:15",
+      departLabel: "THU 18:00", classRef: "FIN 3301", classEnd: "17:00",
+      returnLabel: "SUN 20:00", returnSub: "BACK FOR MON 10:00",
+      learnedFrom: "LAST 9 TRIPS",
+      aiBody: "It\u2019s Wednesday. Your Rabat run leaves tomorrow \u2014 1h after FIN 3301. Asr stop at the Khemisset mosque is on the route, as always.",
+      chips: ["4 MATCHES", "3 BBA RIDERS", "CASH OK"],
+      habits: [
+        { key: "thu", title: "THU 18:00 \u00b7 IFR \u2192 RBA", sub: "EVERY WEEK \u00b7 NO FRIDAY CLASSES", on: true },
+        { key: "asr", title: "ASR STOP ON RABAT TRIPS", sub: "MOSQUE NEAR KHEMISSET \u00b7 ~10 MIN", on: true },
+        { key: "foot", title: "SAT 21:00 \u00b7 FOOTBALL, AGDAL", sub: "RIDE BACK SUNDAY EVENING", on: false }
+      ],
+      prefOn: ["budget", "cash", "twoway"],
+      vibe: [82, 74, 88], pay: "cash",
+      fare: 60, fairMin: 50, fairMax: 70,
+      fareLine: "FAIR SPLIT: 60 MAD/SEAT \u00b7 4 RIDERS \u00b7 CASH IN CAR OK \u00b7 ASR STOP INCLUDED",
+      regularsLine: "Your Thursday Rabat run has 4 regulars waiting. Set the seat price.",
+      driverInitial: "H", driverFirst: "HAMZA",
+      driverLine1: "HAMZA K. \u00b7 4.8\u2605",
+      driverLine2: "BBA SENIOR \u00b7 FROM AGDAL \u00b7 CLIO 5",
+      seat: "2/4", arriveTime: "19:12",
+      rateSub: "IFR \u2192 RBA \u00b7 THU 18:00 \u00b7 60 MAD",
+      stopNote: "ASR STOP \u00b7 MOSQUE NEAR KHEMISSET \u00b7 ~10 MIN \u2014 added from your habits. Hamza prays too.",
+      notifMain: "BLDG 36 checkout is FRI 12:00. Rabat rides are 60% full for THU\u2013FRI \u2014 lock yours.",
+      notifExtra: [
+        { when: "YESTERDAY", text: "FIN 3301 final ends WED 12:00. Leave same day? 3 rides have your Asr stop." },
+        { when: "SATURDAY", text: "Football at 21:00 \u2014 Hamza\u2019s car has 2 seats back to campus Sunday." }
+      ],
+      dna: [
+        { title: "THU 18:00 · IFR → RBA", why: "SEEN 9× · EVERY WEEK", conf: 95 },
+        { title: "ASR STOP · KHEMISSET MOSQUE", why: "9 OF 9 TRIPS", conf: 98 },
+        { title: "CASH, IN THE CAR", why: "21 OF 21 PAYMENTS", conf: 100 },
+        { title: "TALKS TACTICS ALL RIDE", why: "RATED ‘GOOD COMPANY’ 8×", conf: 81 },
+        { title: "SAT FOOTBALL RETURN", why: "3 SUNDAYS THIS SEMESTER", conf: 62 }
+      ],
+      weather: { tag: "FOG · R707 AFTER AZROU · THU", text: "Fog bank forecast on the descent. Hamza leaves 17:30 instead of 18:00 — Asr stop kept, arrival unchanged." },
+      tunedToggles: [
+        { key: "asr", title: "ASR STOP", sub: "MOSQUE NEAR KHEMISSET · ~10 MIN", on: true },
+        { key: "shotgun", title: "FRONT SEAT WHEN FREE", sub: "YOU CALL IT · HAMZA KNOWS", on: true },
+        { key: "ramadan", title: "RAMADAN MODE", sub: "AUTO IN FEB · POST-IFTAR DEPARTURES", on: false }
+      ],
+      audioDefault: "DARIJA POD",
+      swap: [
+        { k: "h", name: "HAMZA", label: "HAMZA · DRIVER" },
+        { k: "s", name: "SIMO", label: "SIMO · BBA ’26" },
+        { k: "y", name: "YOUSSEF", label: "YOUSSEF · BBA ’27" }
+      ],
+      trunkNote: "GYM BAG + BOOTS EVERY THURSDAY — HAMZA KEEPS THE LEFT TRUNK SIDE FOR YOU",
+      semester: { trips: 21, saved: 480, co2: 52, streak: 9, topLabel: "IFR ⇄ RBA · 18 OF 21 TRIPS", crew: "YOUR CREW: HAMZA · SIMO · YOUSSEF", fact: "Your Asr stop has never been skipped. Not once in 9 trips." }
+    },
+    aya: {
+      name: "Aya", surname: "TAZI", email: "a.tazi@aui.ma",
+      major: "CS \u201928", bldg: "BLDG 26", area: "GU\u00c9LIZ",
+      homeLine: "GU\u00c9LIZ, RAK", homeLineFull: "GU\u00c9LIZ, MARRAKECH",
+      tagline: "SAFETY FIRST \u00b7 PLANS AHEAD",
+      code: "RAK", destFull: "MARRAKECH",
+      eta: "3H40", nowLine: "THU \u00b7 MAY 07 \u00b7 20:30",
+      departLabel: "FRI 15:00", classRef: "CSC 2302", classEnd: "14:00",
+      returnLabel: "SUN 14:00", returnSub: "ARRIVES BEFORE DARK \u2713",
+      learnedFrom: "LAST 4 TRIPS",
+      aiBody: "It\u2019s Thursday. Your Marrakech ride leaves tomorrow after CSC 2302. Women-only car, direct, live-shared with Mama \u2014 as always.",
+      chips: ["2 MATCHES", "WOMEN-ONLY \u2713", "1 FROM GU\u00c9LIZ"],
+      habits: [
+        { key: "fri", title: "FRI 15:00 \u00b7 IFR \u2192 RAK", sub: "TWICE A MONTH \u00b7 LONG TRIP", on: true },
+        { key: "women", title: "WOMEN-ONLY CAR", sub: "ALWAYS \u00b7 NEVER ASK AGAIN", on: true },
+        { key: "share", title: "AUTO-SHARE LIVE WITH MAMA", sub: "STARTS AT PICKUP \u00b7 ENDS AT DOOR", on: true }
+      ],
+      prefOn: ["safety", "female", "applepay", "rated"],
+      vibe: [22, 12, 18], pay: "applepay",
+      fare: 150, fairMin: 140, fairMax: 160,
+      fareLine: "FAIR SPLIT: 150 MAD/SEAT \u00b7 3 RIDERS \u00b7 WOMEN-ONLY CAR \u2713 \u00b7 SHARED LIVE WITH MAMA",
+      regularsLine: "Your Friday Marrakech run has 2 regulars waiting. Set the seat price.",
+      driverInitial: "S", driverFirst: "SARA",
+      driverLine1: "SARA M. \u00b7 5.0\u2605",
+      driverLine2: "CS GRAD \u00b7 WOMEN-ONLY CAR \u00b7 TUCSON",
+      seat: "2/3", arriveTime: "18:40",
+      rateSub: "IFR \u2192 RAK \u00b7 FRI 15:00 \u00b7 150 MAD",
+      stopNote: "DIRECT \u00b7 NO STOPS \u00b7 QUIET CAR \u2014 trip shared live with Mama + roommate until you\u2019re home.",
+      notifMain: "BLDG 26 checkout is FRI 12:00. Only 2 women-only Marrakech cars left \u2014 book yours.",
+      notifExtra: [
+        { when: "YESTERDAY", text: "CSC 2302 final ends THU 10:00. Sara drives at 12:00 \u2014 want the seat?" },
+        { when: "TUESDAY", text: "Quiet car confirmed for Friday \u2014 Sara + 1 other rider, both women." }
+      ],
+      dna: [
+        { title: "WOMEN-ONLY CAR", why: "8 OF 8 TRIPS · HARD RULE", conf: 100 },
+        { title: "FRI 15:00 · IFR → RAK", why: "TWICE A MONTH · SEEN 4×", conf: 88 },
+        { title: "QUIET CAR · HEADPHONES IN", why: "SET ONCE · KEPT ALWAYS", conf: 96 },
+        { title: "LIVE-SHARE WITH MAMA", why: "16 OF 16 LEGS SHARED", conf: 100 },
+        { title: "ARRIVE BEFORE DARK", why: "EVERY RETURN ≤ 18:00", conf: 90 }
+      ],
+      weather: { tag: "HEAT · RAK 39°C · FRI", text: "Marrakech hits 39° Friday. Sara pre-cools the car and loads cold water before the Guéliz drop-off." },
+      tunedToggles: [
+        { key: "wake", title: "WAKE ME AT MY STOP", sub: "BUZZ 15 MIN BEFORE GUÉLIZ", on: true },
+        { key: "share", title: "AUTO-SHARE WITH MAMA", sub: "PICKUP → YOUR DOOR", on: true },
+        { key: "prayer", title: "PRAYER BREAK ON REQUEST", sub: "SARA STOPS WHEN ASKED", on: false }
+      ],
+      audioDefault: "SILENCE",
+      swap: [
+        { k: "s", name: "SARA", label: "SARA · DRIVER" },
+        { k: "i", name: "IMANE", label: "IMANE · CS ’28" }
+      ],
+      trunkNote: "CHECKOUT FRI: 2 BAGS + PRINTS FOR THE DESIGN EXPO — TUCSON TRUNK CONFIRMED ✓",
+      semester: { trips: 8, saved: 720, co2: 41, streak: 4, topLabel: "IFR ⇄ RAK · 8 OF 8 TRIPS", crew: "YOUR CREW: SARA · IMANE", fact: "Every ride: women-only, quiet, shared with Mama. Zero exceptions." }
+    }
+  };
+
+  state = this.buildState((this.props.persona ?? "Salma").toLowerCase(), "role", this.props.keyVariant ?? "A");
+
+  buildState(key, screen, variant) {
+    const P = this.personas[key] || this.personas.salma;
+    const prefKeys = ["safety", "female", "budget", "cash", "wire", "applepay", "luxury", "rated", "exp", "twoway"];
+    return {
+      personaKey: this.personas[key] ? key : "salma",
+      screen, variant,
+      prefs: Object.fromEntries(prefKeys.map(k => [k, P.prefOn.includes(k)])),
+      intro: P.vibe[0], plan: P.vibe[1], chatty: P.vibe[2],
+      fare: P.fare, pay: P.pay, twoWay: true,
+      stars: 4,
+      tags: { ontime: true, safe: true, clean: false, chat: false },
+      habitsOn: Object.fromEntries(P.habits.map(h => [h.key, h.on])),
+      forgotten: {},
+      swapped: {},
+      audio: P.audioDefault,
+      tunedOn: Object.fromEntries(P.tunedToggles.map(t => [t.key, t.on]))
+    };
+  }
+
+  setPersona(key) { this.setState(this.buildState(key, this.state.screen, this.state.variant)); }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.persona !== this.props.persona && this.props.persona) {
+      const k = String(this.props.persona).toLowerCase();
+      if (k !== this.state.personaKey) this.setPersona(k);
+    }
+  }
+
+  go(screen) { this.setState({ screen }); }
+
+  renderVals() {
+    const s = this.state;
+    const AC = "#41EA7E";
+    const P = this.personas[s.personaKey];
+    const nav = (scr) => () => this.go(scr);
+
+    const steps = [
+      ["role", "\u263A\uFE0E I AM A\u2026"],
+      ["prefs", "\u2713 PREFERENCES"],
+      ["vibe", "\u266A VIBE CHECK"],
+      ["home", "\u2302 HOME \u00b7 AI [KEY]"],
+      ["schedule", "\u21C4 BOOK TRIP"],
+      ["approved", "\u2691 RIDE LOCKED"],
+      ["rate", "\u2605 RATE DRIVER"],
+      ["notifs", "\u2709\uFE0E FOR YOU"],
+      ["dna", "\u2756 MY RIDE DNA"],
+      ["tuned", "\u2699\uFE0E RIDE, TUNED"],
+      ["semester", "\u25A6 SEMESTER"],
+      ["driver", "\u25CE DRIVER MODE"]
+    ];
+    const railSteps = steps.map(([id, label], i) => {
+      const active = s.screen === id;
+      return {
+        n: String(i + 1).padStart(2, "0"), label,
+        go: nav(id),
+        bg: active ? "#121A14" : "transparent",
+        border: active ? "#2E5C44" : "transparent",
+        fg: active ? "#F2F4EF" : "#8FA096",
+        dotFg: active ? AC : "#556058"
+      };
+    });
+
+    const personaTabs = ["salma", "omar", "aya"].map(k => {
+      const active = s.personaKey === k;
+      return {
+        label: k.toUpperCase(),
+        go: () => this.setPersona(k),
+        bg: active ? AC : "transparent",
+        fg: active ? "#0A0E0B" : "#8FA096"
+      };
+    });
+
+    const prefDefs = [
+      ["safety", "\u271A SAFETY"], ["female", "\u2640\uFE0E FEMALE DRIVER"], ["budget", "\u00A2 BUDGET"],
+      ["cash", "\u00A4 CASH"], ["wire", "\u21CC WIRE / PAYPAL"], ["applepay", "\u2726 APPLE PAY"],
+      ["luxury", "\u265B LUXURY CAR"], ["rated", "\u2605 HIGHLY RATED"],
+      ["exp", "\u25CE EXPERIENCED"], ["twoway", "\u21C4 TWO-WAY"]
+    ];
+    const prefList = prefDefs.map(([key, label]) => {
+      const on = s.prefs[key];
+      return {
+        label,
+        toggle: () => this.setState(st => ({ prefs: { ...st.prefs, [key]: !st.prefs[key] } })),
+        bg: on ? AC : "transparent",
+        fg: on ? "#0A0E0B" : "#8FA096",
+        border: on ? AC : "#263029"
+      };
+    });
+
+    const habits = P.habits.map(h => {
+      const on = s.habitsOn[h.key];
+      return {
+        title: h.title, sub: h.sub,
+        toggle: () => this.setState(st => ({ habitsOn: { ...st.habitsOn, [h.key]: !st.habitsOn[h.key] } })),
+        togBg: on ? AC : "#33403A",
+        knobLeft: on ? "21px" : "3px"
+      };
+    });
+
+    const starList = [1, 2, 3, 4, 5].map(n => ({
+      color: n <= s.stars ? "#E9C84B" : "#33403A",
+      set: () => this.setState({ stars: n })
+    }));
+
+    const tagDefs = [["ontime", "\u25F7 ON TIME"], ["safe", "\u271A SAFE DRIVER"], ["clean", "\u2726 CLEAN CAR"], ["chat", "\u263A\uFE0E GOOD COMPANY"]];
+    const tagList = tagDefs.map(([key, label]) => {
+      const on = s.tags[key];
+      return {
+        label,
+        toggle: () => this.setState(st => ({ tags: { ...st.tags, [key]: !st.tags[key] } })),
+        bg: on ? AC : "transparent",
+        fg: on ? "#0A0E0B" : "#8FA096",
+        border: on ? AC : "#263029"
+      };
+    });
+
+    const vibeWords = [
+      s.intro > 55 ? "OUTGOING" : "LOW-KEY",
+      s.plan < 45 ? "PLANNER" : "SPONTANEOUS",
+      s.chatty > 55 ? "CHATTY RIDES" : "QUIET RIDES"
+    ];
+    const dnaList = P.dna.map((d, i) => {
+      const off = !!s.forgotten[i];
+      return {
+        title: d.title,
+        why: off ? "FORGOTTEN \u2014 CAMBUS WON\u2019T USE THIS" : "WHY: " + d.why + " \u00b7 " + d.conf + "% SURE",
+        confW: off ? "0%" : d.conf + "%",
+        op: off ? 0.45 : 1,
+        btn: off ? "UNDO" : "FORGET",
+        btnFg: off ? AC : "#E86A5C",
+        btnBorder: off ? "#2E5C44" : "#4A2A26",
+        toggle: () => this.setState(st => ({ forgotten: { ...st.forgotten, [i]: !st.forgotten[i] } }))
+      };
+    });
+    const tunedRows = P.tunedToggles.map(t => {
+      const on = s.tunedOn[t.key];
+      return {
+        title: t.title, sub: t.sub,
+        togBg: on ? AC : "#33403A",
+        knobLeft: on ? "21px" : "3px",
+        toggle: () => this.setState(st => ({ tunedOn: { ...st.tunedOn, [t.key]: !st.tunedOn[t.key] } }))
+      };
+    });
+    const audioOpts = ["SILENCE", "QURAN", "DARIJA POD", "BLEND"].map(a => {
+      const on = s.audio === a;
+      return {
+        label: a,
+        bg: on ? AC : "transparent",
+        fg: on ? "#0A0E0B" : "#8FA096",
+        border: on ? AC : "#263029",
+        set: () => this.setState({ audio: a })
+      };
+    });
+    const swapList = (P.swap || []).map(w => {
+      const on = !!s.swapped[w.k];
+      return {
+        label: on ? w.name + " ✓ SENT" : w.label,
+        tap: () => this.setState(st => ({ swapped: { ...st.swapped, [w.k]: !st.swapped[w.k] } })),
+        bg: on ? "#E9C84B" : "transparent",
+        fg: on ? "#0A0E0B" : "#E9C84B",
+        border: on ? "#E9C84B" : "#5C4A1E"
+      };
+    });
+    const fareOk = s.fare >= P.fairMin && s.fare <= P.fairMax;
+
+    return {
+      showRail: this.props.showPitchRail ?? true,
+      railSteps, personaTabs,
+      P,
+      nameUpper: P.name.toUpperCase(),
+      prefsSub: "Pre-checked from " + P.name + "\u2019s " + P.learnedFrom.toLowerCase() + " \u2014 not a generic form.",
+      chipList: P.chips.map(t => ({ t })),
+      notifExtra: P.notifExtra,
+
+      showRole: s.screen === "role",
+      showPrefs: s.screen === "prefs",
+      showVibe: s.screen === "vibe",
+      showHome: s.screen === "home",
+      showSchedule: s.screen === "schedule",
+      showApproved: s.screen === "approved",
+      showRate: s.screen === "rate",
+      showNotifs: s.screen === "notifs",
+      showDriver: s.screen === "driver",
+      showDna: s.screen === "dna",
+      showTuned: s.screen === "tuned",
+      showSemester: s.screen === "semester",
+      goRole: nav("role"), goPrefs: nav("prefs"), goVibe: nav("vibe"),
+      goHome: nav("home"), goSchedule: nav("schedule"), goApproved: nav("approved"),
+      goRate: nav("rate"), goNotifs: nav("notifs"), goDriver: nav("driver"),
+      goDna: nav("dna"), goTuned: nav("tuned"), goSemester: nav("semester"),
+      dnaList, tunedRows, audioOpts, swapList,
+
+      prefList,
+      intro: s.intro, plan: s.plan, chatty: s.chatty,
+      setIntro: (e) => this.setState({ intro: +e.target.value }),
+      setPlan: (e) => this.setState({ plan: +e.target.value }),
+      setChatty: (e) => this.setState({ chatty: +e.target.value }),
+      vibeSummary: "> MATCHING " + P.name.toUpperCase() + " WITH: " + vibeWords.join(" \u00b7 "),
+
+      isVarA: s.variant === "A",
+      isVarB: s.variant === "B",
+      setVarA: () => this.setState({ variant: "A" }),
+      setVarB: () => this.setState({ variant: "B" }),
+      varABg: s.variant === "A" ? AC : "transparent",
+      varAFg: s.variant === "A" ? "#0A0E0B" : "#8FA096",
+      varBBg: s.variant === "B" ? AC : "transparent",
+      varBFg: s.variant === "B" ? "#0A0E0B" : "#8FA096",
+      habits,
+
+      twoWayBg: s.twoWay ? AC : "#33403A",
+      twoWayKnob: s.twoWay ? "21px" : "3px",
+      toggleTwoWay: () => this.setState(st => ({ twoWay: !st.twoWay })),
+      returnOpacity: s.twoWay ? 1 : 0.35,
+      payApple: () => this.setState({ pay: "applepay" }),
+      payCash: () => this.setState({ pay: "cash" }),
+      payAppleBg: s.pay === "applepay" ? "#F2F4EF" : "transparent",
+      payAppleFg: s.pay === "applepay" ? "#0A0E0B" : "#8FA096",
+      payAppleBorder: s.pay === "applepay" ? "#F2F4EF" : "#263029",
+      payCashBg: s.pay === "cash" ? "#F2F4EF" : "transparent",
+      payCashFg: s.pay === "cash" ? "#0A0E0B" : "#8FA096",
+      payCashBorder: s.pay === "cash" ? "#F2F4EF" : "#263029",
+
+      starList, tagList,
+
+      fare: s.fare,
+      fareUp: () => this.setState(st => ({ fare: st.fare + 5 })),
+      fareDown: () => this.setState(st => ({ fare: Math.max(5, st.fare - 5) })),
+      fareHint: fareOk
+        ? "FAIR SPLIT \u2713 \u2014 COVERS FUEL + TOLLS ON THE " + P.destFull + " RUN"
+        : (s.fare > P.fairMax ? "ABOVE FAIR SPLIT \u2014 YOUR REGULARS MAY SKIP" : "BELOW COST \u2014 YOU LOSE MONEY ON FUEL"),
+      fareHintBorder: fareOk ? "#2E5C44" : "#5C4A1E",
+      fareHintFg: fareOk ? "#7DF2A6" : "#E9C84B"
+    };
+  }
+}
+</script>
+</body>
+</html>

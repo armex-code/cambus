@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    html, body { margin: 0; padding: 0; background: #E9EBE6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    a { color: #0E8A57; text-decoration: none; }
+    a:hover { color: #0B6B44; }
+    input[type="range"] { accent-color: #0E8A57; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; gap: 36px; padding: 32px; box-sizing: border-box;">
+
+  <!-- Pitch rail -->
+  <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+    <div style="width: 210px; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-size: 22px; font-weight: 800; color: #14201A; letter-spacing: -0.5px;">Cambus</div>
+      <div style="font-size: 12px; color: #6B756F; margin-bottom: 10px;">AUI carpooling &middot; pitch flow</div>
+      <sc-for list="{{ railSteps }}" as="step" hint-placeholder-count="8">
+        <div onClick="{{ step.go }}" style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; cursor: pointer; background: {{ step.bg }}; border: 1px solid {{ step.border }};">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: {{ step.dotBg }}; color: {{ step.dotFg }}; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{ step.n }}</div>
+          <div style="font-size: 13px; font-weight: 600; color: #14201A;">{{ step.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <!-- Phone -->
+  <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="390px,844px">
+    <div style="position: relative; width: 100%; height: 100%; background: #F6F7F4; overflow: hidden;">
+
+      <!-- ============ 1. I AM A… ============ -->
+      <sc-if value="{{ showRole }}" hint-placeholder-val="{{ true }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 48px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: #0E8A57; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 24px; font-weight: 800;">C</div>
+            <div style="font-size: 30px; font-weight: 800; color: #14201A; letter-spacing: -0.5px; margin-top: 8px;">I am a&hellip;</div>
+            <div style="font-size: 14px; color: #6B756F;">Cambus is AUI-only. Your school email is your ID.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 32px;">
+            <div onClick="{{ goDriver }}" style="padding: 20px; border-radius: 16px; background: #FFFFFF; border: 1.5px solid #DDE2DC; cursor: pointer; display: flex; flex-direction: column; gap: 4px;">
+              <div style="font-size: 18px; font-weight: 700; color: #14201A;">Driver</div>
+              <div style="font-size: 13px; color: #6B756F;">I have a car and empty seats</div>
+            </div>
+            <div onClick="{{ goPrefs }}" style="padding: 20px; border-radius: 16px; background: #0E8A57; border: 1.5px solid #0E8A57; cursor: pointer; display: flex; flex-direction: column; gap: 4px;">
+              <div style="font-size: 18px; font-weight: 700; color: #FFFFFF;">Passenger</div>
+              <div style="font-size: 13px; color: #CBEBD9;">I need a ride, no time to plan one</div>
+            </div>
+          </div>
+          <div style="margin-top: auto; display: flex; align-items: center; gap: 8px; padding: 12px 14px; background: #EDF3EC; border-radius: 12px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #0E8A57;"></div>
+            <div style="font-size: 12px; color: #3E4B43;">Verified: <b>you@aui.ma</b> &middot; students &amp; staff only</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 2. PREFERENCE BUBBLES ============ -->
+      <sc-if value="{{ showPrefs }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 40px;">
+            <div style="font-size: 26px; font-weight: 800; color: #14201A; letter-spacing: -0.5px;">Check all that matter to you</div>
+            <div style="font-size: 14px; color: #6B756F; margin-top: 6px;">We only match you with rides that fit.</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px;">
+            <sc-for list="{{ prefList }}" as="p" hint-placeholder-count="10">
+              <div onClick="{{ p.toggle }}" style="padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; background: {{ p.bg }}; color: {{ p.fg }}; border: 1.5px solid {{ p.border }};">{{ p.label }}</div>
+            </sc-for>
+          </div>
+          <div onClick="{{ goVibe }}" style="margin-top: auto; padding: 16px; border-radius: 14px; background: #0E8A57; color: #FFFFFF; font-size: 16px; font-weight: 700; text-align: center; cursor: pointer;">Continue</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 3. DESCRIBE YOURSELF ============ -->
+      <sc-if value="{{ showVibe }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 40px;">
+            <div style="font-size: 26px; font-weight: 800; color: #14201A; letter-spacing: -0.5px;">Describe yourself</div>
+            <div style="font-size: 14px; color: #6B756F; margin-top: 6px;">We use this to match the vibe in the car &mdash; nothing else.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 28px; margin-top: 36px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #3E4B43;"><span>Introvert</span><span>Extrovert</span></div>
+              <input type="range" min="0" max="100" value="{{ intro }}" onChange="{{ setIntro }}" style="width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #3E4B43;"><span>Planner</span><span>Spontaneous</span></div>
+              <input type="range" min="0" max="100" value="{{ plan }}" onChange="{{ setPlan }}" style="width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #3E4B43;"><span>Quiet ride</span><span>Chatty ride</span></div>
+              <input type="range" min="0" max="100" value="{{ chatty }}" onChange="{{ setChatty }}" style="width: 100%;" />
+            </div>
+          </div>
+          <div style="margin-top: 28px; padding: 14px; border-radius: 12px; background: #EDF3EC; font-size: 13px; color: #3E4B43;">{{ vibeSummary }}</div>
+          <div onClick="{{ goHome }}" style="margin-top: auto; padding: 16px; border-radius: 14px; background: #0E8A57; color: #FFFFFF; font-size: 16px; font-weight: 700; text-align: center; cursor: pointer;">Find my rides</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 4. HOME / MAP (KEY SCREEN, A/B) ============ -->
+      <sc-if value="{{ showHome }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+          <!-- Map -->
+          <div style="position: relative; flex: 1; background: #E8ECE3; overflow: hidden;">
+            <svg viewBox="0 0 390 460" style="position: absolute; inset: 0; width: 100%; height: 100%;" preserveAspectRatio="xMidYMid slice">
+              <polyline points="0,120 130,110 200,140 390,130" fill="none" stroke="#FFFFFF" stroke-width="14"></polyline>
+              <polyline points="60,0 80,180 60,320 90,460" fill="none" stroke="#FFFFFF" stroke-width="10"></polyline>
+              <polyline points="390,300 240,290 150,340 0,330" fill="none" stroke="#FFFFFF" stroke-width="12"></polyline>
+              <polyline points="300,0 290,150 320,290" fill="none" stroke="#FFFFFF" stroke-width="8"></polyline>
+              <polyline points="80,400 150,340 240,290 290,150 200,140 130,110" fill="none" stroke="#0E8A57" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></polyline>
+              <circle cx="80" cy="400" r="8" fill="#0E8A57"></circle>
+              <circle cx="80" cy="400" r="14" fill="#0E8A57" opacity="0.25"></circle>
+              <circle cx="130" cy="110" r="9" fill="#14201A"></circle>
+              <circle cx="130" cy="110" r="4" fill="#FFFFFF"></circle>
+            </svg>
+            <div style="position: absolute; left: 150px; top: 210px; width: 26px; height: 15px; background: #14201A; border-radius: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>
+            <div style="position: absolute; left: 265px; top: 120px; width: 26px; height: 15px; background: #14201A; border-radius: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>
+            <div style="position: absolute; top: 58px; left: 20px; padding: 7px 14px; border-radius: 999px; background: #14201A; color: #FFFFFF; font-size: 13px; font-weight: 700;">1h&ndash;2h</div>
+            <div onClick="{{ goNotifs }}" style="position: absolute; top: 52px; right: 20px; width: 38px; height: 38px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+              <div style="position: relative; width: 16px; height: 16px; border: 2px solid #14201A; border-radius: 50% 50% 4px 4px; border-bottom: none;">
+                <div style="position: absolute; left: 4px; bottom: -5px; width: 4px; height: 4px; border-radius: 50%; background: #14201A;"></div>
+                <div style="position: absolute; right: -6px; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: #D9483B; border: 2px solid #FFFFFF;"></div>
+              </div>
+            </div>
+            <!-- A/B switch -->
+            <div style="position: absolute; bottom: 14px; right: 20px; display: flex; background: #FFFFFF; border-radius: 999px; padding: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
+              <div onClick="{{ setVarA }}" style="padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; background: {{ varABg }}; color: {{ varAFg }};">A</div>
+              <div onClick="{{ setVarB }}" style="padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; background: {{ varBBg }}; color: {{ varBFg }};">B</div>
+            </div>
+          </div>
+          <!-- Bottom sheet -->
+          <div style="background: #FFFFFF; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; padding: 10px 20px 24px; box-shadow: 0 -6px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 14px;">
+            <div style="width: 36px; height: 4px; border-radius: 2px; background: #DDE2DC; margin: 0 auto;"></div>
+            <div onClick="{{ goSchedule }}" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; background: #F0F2EE; cursor: pointer;">
+              <div style="width: 16px; height: 16px; border: 2.5px solid #6B756F; border-radius: 50%; position: relative;"><div style="position: absolute; right: -6px; bottom: -5px; width: 7px; height: 2.5px; background: #6B756F; transform: rotate(45deg); border-radius: 2px;"></div></div>
+              <div style="font-size: 16px; font-weight: 600; color: #6B756F;">Where to?</div>
+            </div>
+
+            <!-- Variant A: proactive AI card -->
+            <sc-if value="{{ isVarA }}" hint-placeholder-val="{{ true }}">
+              <div style="border: 1.5px solid #0E8A57; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: #F4FAF6;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="padding: 3px 8px; border-radius: 6px; background: #0E8A57; color: #FFFFFF; font-size: 10px; font-weight: 800; letter-spacing: 0.5px;">CAMBUS AI</div>
+                  <div style="font-size: 11px; color: #6B756F;">learned from your last 6 trips</div>
+                </div>
+                <div style="font-size: 15px; font-weight: 700; color: #14201A; line-height: 1.35;">It&rsquo;s Thursday &mdash; your usual <span style="color: #0E8A57;">Ifrane &rarr; Casablanca</span> ride leaves tomorrow at 17:00.</div>
+                <div style="font-size: 12.5px; color: #3E4B43;">3 drivers match your preferences &middot; includes your Asr stop</div>
+                <div style="display: flex; gap: 8px;">
+                  <div onClick="{{ goSchedule }}" style="flex: 1; padding: 11px; border-radius: 10px; background: #0E8A57; color: #FFFFFF; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer;">Book my usual</div>
+                  <div style="padding: 11px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #DDE2DC; color: #3E4B43; font-size: 14px; font-weight: 600; cursor: pointer;">Not this week</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- Variant B: habits list -->
+            <sc-if value="{{ isVarB }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="font-size: 13px; font-weight: 800; color: #14201A; letter-spacing: 0.3px;">YOUR HABITS</div>
+                  <div style="font-size: 11px; color: #6B756F;">auto-book when a match is found</div>
+                </div>
+                <sc-for list="{{ habits }}" as="h" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #F0F2EE;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="font-size: 14px; font-weight: 700; color: #14201A;">{{ h.title }}</div>
+                      <div style="font-size: 12px; color: #6B756F;">{{ h.sub }}</div>
+                    </div>
+                    <div onClick="{{ h.toggle }}" style="width: 44px; height: 26px; border-radius: 13px; background: {{ h.togBg }}; position: relative; cursor: pointer; flex-shrink: 0;">
+                      <div style="position: absolute; top: 3px; left: {{ h.knobLeft }}; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: left 0.15s;"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div onClick="{{ goSchedule }}" style="display: flex; align-items: center; gap: 12px; padding: 4px 2px; cursor: pointer;">
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: #F0F2EE; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 10px; border: 2px solid #3E4B43; border-top: none; position: relative;"><div style="position: absolute; left: -4px; top: -7px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 7px solid #3E4B43;"></div></div></div>
+              <div style="display: flex; flex-direction: column;">
+                <div style="font-size: 14px; font-weight: 700; color: #14201A;">Home &middot; Casablanca, Maarif</div>
+                <div style="font-size: 12px; color: #6B756F;">saved place</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 5. SCHEDULE FORM ============ -->
+      <sc-if value="{{ showSchedule }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; overflow-y: auto;">
+          <div onClick="{{ goHome }}" style="margin-top: 40px; font-size: 13px; font-weight: 700; color: #0E8A57; cursor: pointer;">&larr; Back</div>
+          <div style="font-size: 24px; font-weight: 800; color: #14201A; letter-spacing: -0.5px; margin-top: 10px;">Carpooling in Ifrane</div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+            <div style="padding: 14px 16px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid #DDE2DC; display: flex; flex-direction: column; gap: 2px;">
+              <div style="font-size: 11px; font-weight: 700; color: #6B756F; letter-spacing: 0.5px;">ROUTE</div>
+              <div style="font-size: 15px; font-weight: 700; color: #14201A;">AUI Campus &rarr; Casablanca, Maarif</div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; padding: 14px 16px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid #DDE2DC;">
+                <div style="font-size: 11px; font-weight: 700; color: #6B756F; letter-spacing: 0.5px;">DEPARTURE</div>
+                <div style="font-size: 15px; font-weight: 700; color: #14201A; margin-top: 2px;">Fri 17:00</div>
+              </div>
+              <div style="flex: 1; padding: 14px 16px; border-radius: 12px; background: {{ returnBg }}; border: 1.5px solid {{ returnBorder }}; opacity: {{ returnOpacity }};">
+                <div style="font-size: 11px; font-weight: 700; color: #6B756F; letter-spacing: 0.5px;">RETURN</div>
+                <div style="font-size: 15px; font-weight: 700; color: #14201A; margin-top: 2px;">Sun 18:30</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid #DDE2DC;">
+              <div style="font-size: 14px; font-weight: 700; color: #14201A;">Two-way trip</div>
+              <div onClick="{{ toggleTwoWay }}" style="width: 44px; height: 26px; border-radius: 13px; background: {{ twoWayBg }}; position: relative; cursor: pointer;">
+                <div style="position: absolute; top: 3px; left: {{ twoWayKnob }}; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: left 0.15s;"></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+              <div onClick="{{ payApple }}" style="flex: 1; padding: 13px; border-radius: 12px; text-align: center; font-size: 14px; font-weight: 700; cursor: pointer; background: {{ payAppleBg }}; color: {{ payAppleFg }}; border: 1.5px solid {{ payAppleBorder }};">Apple Pay</div>
+              <div onClick="{{ payCash }}" style="flex: 1; padding: 13px; border-radius: 12px; text-align: center; font-size: 14px; font-weight: 700; cursor: pointer; background: {{ payCashBg }}; color: {{ payCashFg }}; border: 1.5px solid {{ payCashBorder }};">Cash</div>
+            </div>
+            <div style="padding: 12px 14px; border-radius: 12px; background: #EDF3EC; font-size: 12.5px; color: #3E4B43;">Fair split: <b>85 MAD</b> per seat &middot; 4 passengers &middot; female-driver filter <b>on</b></div>
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 24px;">
+            <div onClick="{{ goApproved }}" style="flex: 1; padding: 16px; border-radius: 14px; background: #0E8A57; color: #FFFFFF; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer;">Schedule for later</div>
+            <div onClick="{{ goApproved }}" style="flex: 1; padding: 16px; border-radius: 14px; background: #14201A; color: #FFFFFF; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer;">Pick up now</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 6. RIDE APPROVED ============ -->
+      <sc-if value="{{ showApproved }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 64px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: #0E8A57; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 26px; height: 14px; border-left: 5px solid #FFFFFF; border-bottom: 5px solid #FFFFFF; transform: rotate(-45deg) translate(2px, -4px);"></div>
+            </div>
+            <div style="font-size: 26px; font-weight: 800; color: #14201A;">Ride approved</div>
+            <div style="font-size: 14px; color: #6B756F;">Friday 17:00 &middot; AUI Gate 2 pickup</div>
+          </div>
+          <div style="margin-top: 28px; padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1.5px solid #DDE2DC; display: flex; align-items: center; gap: 14px;">
+            <div style="width: 52px; height: 52px; border-radius: 50%; background: #DDE2DC; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: #3E4B43;">Y</div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+              <div style="font-size: 16px; font-weight: 700; color: #14201A;">Yasmine B. &middot; 4.9 &#9733;</div>
+              <div style="font-size: 12.5px; color: #6B756F;">Dacia Duster &middot; grey &middot; seat 3 of 4 &middot; CS senior</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 14px;">
+            <div style="flex: 1; padding: 13px; border-radius: 12px; background: #F0F2EE; text-align: center; font-size: 13.5px; font-weight: 700; color: #14201A; cursor: pointer;">Message</div>
+            <div style="flex: 1; padding: 13px; border-radius: 12px; background: #F0F2EE; text-align: center; font-size: 13.5px; font-weight: 700; color: #14201A; cursor: pointer;">Share live trip</div>
+            <div style="flex: 1; padding: 13px; border-radius: 12px; background: #FBEEEC; text-align: center; font-size: 13.5px; font-weight: 700; color: #D9483B; cursor: pointer;">Report</div>
+          </div>
+          <div style="margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #EDF3EC; font-size: 12.5px; color: #3E4B43;">Route includes a <b>10-min Asr stop</b> at the mosque near Khemisset &mdash; from your habits.</div>
+          <div onClick="{{ goRate }}" style="margin-top: auto; padding: 16px; border-radius: 14px; background: #14201A; color: #FFFFFF; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer;">Simulate trip completed &rarr;</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 7. RATE YOUR DRIVER ============ -->
+      <sc-if value="{{ showRate }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div style="margin-top: 56px; text-align: center;">
+            <div style="font-size: 26px; font-weight: 800; color: #14201A;">Rate your driver</div>
+            <div style="font-size: 14px; color: #6B756F; margin-top: 4px;">Yasmine B. &middot; Ifrane &rarr; Casablanca</div>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 8px; margin-top: 24px;">
+            <sc-for list="{{ starList }}" as="s" hint-placeholder-count="5">
+              <div onClick="{{ s.set }}" style="font-size: 36px; cursor: pointer; color: {{ s.color }}; line-height: 1;">&#9733;</div>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 24px;">
+            <sc-for list="{{ tagList }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.toggle }}" style="padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; background: {{ t.bg }}; color: {{ t.fg }}; border: 1.5px solid {{ t.border }};">{{ t.label }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top: 24px; padding: 14px 16px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid #DDE2DC; min-height: 72px; font-size: 14px; color: #A0A8A2;">Add a note (optional)&hellip;</div>
+          <div onClick="{{ goNotifs }}" style="margin-top: auto; padding: 16px; border-radius: 14px; background: #0E8A57; color: #FFFFFF; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer;">Submit</div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 8. NOTIFICATIONS ============ -->
+      <sc-if value="{{ showNotifs }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div onClick="{{ goHome }}" style="margin-top: 40px; font-size: 13px; font-weight: 700; color: #0E8A57; cursor: pointer;">&larr; Home</div>
+          <div style="font-size: 24px; font-weight: 800; color: #14201A; margin-top: 10px;">Notifications</div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+            <div style="padding: 16px; border-radius: 14px; background: #FFFFFF; border: 1.5px solid #0E8A57; display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="padding: 3px 8px; border-radius: 6px; background: #0E8A57; color: #FFFFFF; font-size: 10px; font-weight: 800; letter-spacing: 0.5px;">CAMBUS AI</div>
+                <div style="font-size: 11px; color: #6B756F;">2h ago</div>
+              </div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #14201A; line-height: 1.4;">Residence checkout is <span style="color: #0E8A57;">Friday</span> &mdash; book your ride home before spots fill up.</div>
+              <div onClick="{{ goSchedule }}" style="align-self: flex-start; padding: 9px 18px; border-radius: 10px; background: #0E8A57; color: #FFFFFF; font-size: 13px; font-weight: 700; cursor: pointer;">Book ride</div>
+            </div>
+            <div style="padding: 16px; border-radius: 14px; background: #FFFFFF; border: 1.5px solid #DDE2DC; display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 11px; color: #6B756F;">Yesterday</div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #14201A; line-height: 1.4;">Finals end June 12 &mdash; Casablanca rides are 70% booked for that weekend.</div>
+            </div>
+            <div style="padding: 16px; border-radius: 14px; background: #FFFFFF; border: 1.5px solid #DDE2DC; display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 11px; color: #6B756F;">Friday</div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #14201A; line-height: 1.4;">Dinner in town tonight? Rides back to campus run until 23:00.</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 9. BECOME A DRIVER ============ -->
+      <sc-if value="{{ showDriver }}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 24px; box-sizing: border-box;">
+          <div onClick="{{ goRole }}" style="margin-top: 40px; font-size: 13px; font-weight: 700; color: #0E8A57; cursor: pointer;">&larr; Back</div>
+          <div style="font-size: 24px; font-weight: 800; color: #14201A; margin-top: 10px;">Become a driver</div>
+          <div style="font-size: 14px; color: #6B756F; margin-top: 6px;">Set your fare per seat. We suggest a fair split of fuel + tolls.</div>
+          <div style="margin-top: 36px; padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1.5px solid #DDE2DC; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: #6B756F; letter-spacing: 0.5px;">AVERAGE FARE &middot; IFRANE &rarr; CASA</div>
+            <div style="display: flex; align-items: center; gap: 24px;">
+              <div onClick="{{ fareDown }}" style="width: 48px; height: 48px; border-radius: 50%; background: #F0F2EE; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #14201A; cursor: pointer;">&minus;5</div>
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="font-size: 44px; font-weight: 800; color: #14201A; letter-spacing: -1px;">{{ fare }}</div>
+                <div style="font-size: 13px; color: #6B756F;">MAD / seat</div>
+              </div>
+              <div onClick="{{ fareUp }}" style="width: 48px; height: 48px; border-radius: 50%; background: #F0F2EE; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #14201A; cursor: pointer;">+5</div>
+            </div>
+            <div style="padding: 10px 14px; border-radius: 10px; background: {{ fareHintBg }}; font-size: 12.5px; color: {{ fareHintFg }}; text-align: center;">{{ fareHint }}</div>
+          </div>
+          <div onClick="{{ goHome }}" style="margin-top: auto; padding: 16px; border-radius: 14px; background: #0E8A57; color: #FFFFFF; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer;">Post my ride</div>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1100, &quot;height&quot;: 940}, &quot;keyVariant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;default&quot;: &quot;A&quot;, &quot;tsType&quot;: &quot;\&quot;A\&quot; | \&quot;B\&quot;&quot;, &quot;section&quot;: &quot;Key screen&quot;}, &quot;showPitchRail&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Presentation&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: "role",
+    variant: this.props.keyVariant ?? "A",
+    prefs: {
+      safety: true, female: false, budget: false, cash: false, wire: false,
+      applepay: true, luxury: true, rated: false, exp: false, twoway: false
+    },
+    intro: 65, plan: 25, chatty: 60,
+    fare: 85,
+    stars: 4,
+    tags: { ontime: true, safe: true, clean: false, chat: false },
+    twoWay: true,
+    pay: "applepay",
+    habits: { fri: true, asr: true, dinner: false }
+  };
+
+  go(screen) { this.setState({ screen }); }
+
+  renderVals() {
+    const s = this.state;
+    const showRail = this.props.showPitchRail ?? true;
+    const green = "#0E8A57";
+    const nav = (scr) => () => this.go(scr);
+
+    const steps = [
+      ["role", "I am a\u2026"],
+      ["prefs", "Preferences"],
+      ["vibe", "Describe yourself"],
+      ["home", "Home \u00b7 AI (key)"],
+      ["schedule", "Schedule trip"],
+      ["approved", "Ride approved"],
+      ["rate", "Rate driver"],
+      ["notifs", "Notifications"],
+      ["driver", "Driver mode"]
+    ];
+    const railSteps = steps.map(([id, label], i) => {
+      const active = s.screen === id;
+      return {
+        n: i + 1, label,
+        go: nav(id),
+        bg: active ? "#FFFFFF" : "transparent",
+        border: active ? "#0E8A57" : "transparent",
+        dotBg: active ? green : "#D5DAD3",
+        dotFg: active ? "#FFFFFF" : "#4A554E"
+      };
+    });
+
+    const prefDefs = [
+      ["safety", "Safety \u2713"], ["female", "Female driver"], ["budget", "Budget conscious"],
+      ["cash", "Cash"], ["wire", "Wire / PayPal"], ["applepay", "Accepts Apple Pay"],
+      ["luxury", "Luxurious car"], ["rated", "Highly rated driver"],
+      ["exp", "Experienced driver"], ["twoway", "Two-way travel"]
+    ];
+    const prefList = prefDefs.map(([key, label]) => {
+      const on = s.prefs[key];
+      return {
+        label, on,
+        toggle: () => this.setState(st => ({ prefs: { ...st.prefs, [key]: !st.prefs[key] } })),
+        bg: on ? green : "#FFFFFF",
+        fg: on ? "#FFFFFF" : "#3E4B43",
+        border: on ? green : "#DDE2DC"
+      };
+    });
+
+    const habitDefs = [
+      ["fri", "Friday \u2192 Casablanca, 17:00", "Every week \u00b7 last booked Apr 3"],
+      ["asr", "Asr prayer stop on Rabat trips", "Mosque near Khemisset \u00b7 ~10 min"],
+      ["dinner", "Friday dinner in town, 19:30", "Downtown Ifrane \u00b7 with friends"]
+    ];
+    const habits = habitDefs.map(([key, title, sub]) => {
+      const on = s.habits[key];
+      return {
+        title, sub,
+        toggle: () => this.setState(st => ({ habits: { ...st.habits, [key]: !st.habits[key] } })),
+        togBg: on ? green : "#D5DAD3",
+        knobLeft: on ? "21px" : "3px"
+      };
+    });
+
+    const starList = [1, 2, 3, 4, 5].map(n => ({
+      color: n <= s.stars ? "#E8B93B" : "#D5DAD3",
+      set: () => this.setState({ stars: n })
+    }));
+
+    const tagDefs = [["ontime", "On time"], ["safe", "Safe driver"], ["clean", "Clean car"], ["chat", "Great conversation"]];
+    const tagList = tagDefs.map(([key, label]) => {
+      const on = s.tags[key];
+      return {
+        label,
+        toggle: () => this.setState(st => ({ tags: { ...st.tags, [key]: !st.tags[key] } })),
+        bg: on ? green : "#FFFFFF",
+        fg: on ? "#FFFFFF" : "#3E4B43",
+        border: on ? green : "#DDE2DC"
+      };
+    });
+
+    const vibeWords = [
+      s.intro > 55 ? "outgoing" : "low-key",
+      s.plan < 45 ? "a planner" : "spontaneous",
+      s.chatty > 55 ? "up for a chat" : "into quiet rides"
+    ];
+    const fareOk = s.fare >= 75 && s.fare <= 95;
+
+    return {
+      showRail,
+      railSteps,
+      showRole: s.screen === "role",
+      showPrefs: s.screen === "prefs",
+      showVibe: s.screen === "vibe",
+      showHome: s.screen === "home",
+      showSchedule: s.screen === "schedule",
+      showApproved: s.screen === "approved",
+      showRate: s.screen === "rate",
+      showNotifs: s.screen === "notifs",
+      showDriver: s.screen === "driver",
+      goRole: nav("role"), goPrefs: nav("prefs"), goVibe: nav("vibe"),
+      goHome: nav("home"), goSchedule: nav("schedule"), goApproved: nav("approved"),
+      goRate: nav("rate"), goNotifs: nav("notifs"), goDriver: nav("driver"),
+
+      prefList,
+      intro: s.intro, plan: s.plan, chatty: s.chatty,
+      setIntro: (e) => this.setState({ intro: +e.target.value }),
+      setPlan: (e) => this.setState({ plan: +e.target.value }),
+      setChatty: (e) => this.setState({ chatty: +e.target.value }),
+      vibeSummary: "You\u2019re " + vibeWords[0] + ", " + vibeWords[1] + ", and " + vibeWords[2] + ". We\u2019ll match accordingly.",
+
+      isVarA: s.variant === "A",
+      isVarB: s.variant === "B",
+      setVarA: () => this.setState({ variant: "A" }),
+      setVarB: () => this.setState({ variant: "B" }),
+      varABg: s.variant === "A" ? "#14201A" : "transparent",
+      varAFg: s.variant === "A" ? "#FFFFFF" : "#6B756F",
+      varBBg: s.variant === "B" ? "#14201A" : "transparent",
+      varBFg: s.variant === "B" ? "#FFFFFF" : "#6B756F",
+      habits,
+
+      twoWayBg: s.twoWay ? green : "#D5DAD3",
+      twoWayKnob: s.twoWay ? "21px" : "3px",
+      toggleTwoWay: () => this.setState(st => ({ twoWay: !st.twoWay })),
+      returnBg: s.twoWay ? "#FFFFFF" : "#F0F2EE",
+      returnBorder: s.twoWay ? "#DDE2DC" : "#E5E9E3",
+      returnOpacity: s.twoWay ? 1 : 0.45,
+      payApple: () => this.setState({ pay: "applepay" }),
+      payCash: () => this.setState({ pay: "cash" }),
+      payAppleBg: s.pay === "applepay" ? "#14201A" : "#FFFFFF",
+      payAppleFg: s.pay === "applepay" ? "#FFFFFF" : "#3E4B43",
+      payAppleBorder: s.pay === "applepay" ? "#14201A" : "#DDE2DC",
+      payCashBg: s.pay === "cash" ? "#14201A" : "#FFFFFF",
+      payCashFg: s.pay === "cash" ? "#FFFFFF" : "#3E4B43",
+      payCashBorder: s.pay === "cash" ? "#14201A" : "#DDE2DC",
+
+      starList, tagList,
+
+      fare: s.fare,
+      fareUp: () => this.setState(st => ({ fare: st.fare + 5 })),
+      fareDown: () => this.setState(st => ({ fare: Math.max(5, st.fare - 5) })),
+      fareHint: fareOk
+        ? "Fair split \u2713 \u2014 covers fuel + tolls across 4 seats"
+        : (s.fare > 95 ? "Above the fair split \u2014 riders may skip your ride" : "Below cost \u2014 you\u2019d lose money on fuel"),
+      fareHintBg: fareOk ? "#EDF3EC" : "#FBF3E4",
+      fareHintFg: fareOk ? "#2E5C44" : "#8A6516"
+    };
+  }
+}
+</script>
+</body>
+</html>

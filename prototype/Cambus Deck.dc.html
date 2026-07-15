@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #1A211C; font-family: "Roboto Mono", monospace; }
+    a { color: #0E8A57; text-decoration: none; }
+    a:hover { color: #0B6B44; }
+  </style>
+</helmet>
+
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+  <!-- ============ 1. TITLE ============ -->
+  <section data-label="Cambus" data-speaker-notes="Cambus is carpooling built only for AUI. One sentence: it learns each student's weekly rhythm and has their ride ready before they think about it." style="background: #0E8A57; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; justify-content: center; padding: 120px;">
+    <div style="font-size: 30px; color: #BFE8D2; letter-spacing: 4px; font-weight: 600;">AUI &middot; IFRANE</div>
+    <div style="font-size: 150px; font-weight: 700; color: #FFFFFF; letter-spacing: -6px; line-height: 1; margin-top: 36px;">cambus<span style="color: #BFE8D2;">_</span></div>
+    <div style="font-size: 44px; color: #E9F4EC; margin-top: 44px; line-height: 1.4; max-width: 1300px;">Carpooling that already knows your week.</div>
+    <div style="display: flex; gap: 16px; margin-top: 72px;">
+      <div style="padding: 14px 26px; border: 2px solid #BFE8D2; border-radius: 999px; font-size: 26px; color: #E9F4EC; font-weight: 600;">AUI students only</div>
+      <div style="padding: 14px 26px; border: 2px solid #BFE8D2; border-radius: 999px; font-size: 26px; color: #E9F4EC; font-weight: 600;">verified by school email</div>
+    </div>
+  </section>
+
+  <!-- ============ 2. THE PROBLEM ============ -->
+  <section data-label="The Problem" data-speaker-notes="Our persona: an AUI student with no car, few transport options out of Ifrane, and no mental bandwidth to plan trips. Every weekend the same scramble." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; padding: 100px 120px;">
+    <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">01 &middot; THE PROBLEM</div>
+    <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15; max-width: 1500px;">Getting out of Ifrane is a weekly chore.</div>
+    <div style="display: flex; gap: 40px; margin-top: 90px;">
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 20px; padding: 48px 44px;">
+        <div style="font-size: 64px; font-weight: 700; color: #0E8A57;">No car</div>
+        <div style="font-size: 28px; color: #6D7A71; margin-top: 18px; line-height: 1.6;">most students depend on others to leave campus</div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 20px; padding: 48px 44px;">
+        <div style="font-size: 64px; font-weight: 700; color: #0E8A57;">Few options</div>
+        <div style="font-size: 28px; color: #6D7A71; margin-top: 18px; line-height: 1.6;">grand taxis and buses on their schedule, not yours</div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 20px; padding: 48px 44px;">
+        <div style="font-size: 64px; font-weight: 700; color: #0E8A57;">No time</div>
+        <div style="font-size: 28px; color: #6D7A71; margin-top: 18px; line-height: 1.6;">planning the same trip again and again, every week</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. ONBOARDING ============ -->
+  <section data-label="Onboarding" data-speaker-notes="Setup is three small steps, one decision per screen: how you ride, what matters to you, and your ride vibe. Under a minute, then Cambus takes over the planning." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; padding: 100px 120px;">
+    <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">02 &middot; ONBOARDING</div>
+    <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">Set up once. Three steps.</div>
+    <div style="display: flex; gap: 40px; margin-top: 80px;">
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 24px; font-weight: 700; color: #0E8A57; letter-spacing: 2px;">STEP 1 OF 3</div>
+        <div style="font-size: 40px; font-weight: 700; color: #1A211C; margin-top: 20px;">How will you ride?</div>
+        <div style="margin-top: 32px; padding: 26px; border-radius: 16px; background: #0E8A57; font-size: 30px; font-weight: 700; color: #FFFFFF;">I need rides &rarr;</div>
+        <div style="margin-top: 16px; padding: 26px; border-radius: 16px; background: #F7F5F0; border: 2px solid #E2DFD5; font-size: 30px; font-weight: 700; color: #1A211C;">I have a car &rarr;</div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 24px; font-weight: 700; color: #0E8A57; letter-spacing: 2px;">STEP 2 OF 3</div>
+        <div style="font-size: 40px; font-weight: 700; color: #1A211C; margin-top: 20px;">What matters?</div>
+        <div style="margin-top: 32px; padding: 22px 26px; border-radius: 16px; background: #F4FAF6; border: 2px solid #0E8A57; font-size: 28px; font-weight: 700; color: #1A211C;">&#10003; Safety checks</div>
+        <div style="margin-top: 14px; padding: 22px 26px; border-radius: 16px; background: #F4FAF6; border: 2px solid #0E8A57; font-size: 28px; font-weight: 700; color: #1A211C;">&#10003; Female drivers only</div>
+        <div style="margin-top: 14px; padding: 22px 26px; border-radius: 16px; background: #FFFFFF; border: 2px solid #E2DFD5; font-size: 28px; font-weight: 700; color: #6D7A71;">Apple Pay</div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 24px; font-weight: 700; color: #0E8A57; letter-spacing: 2px;">STEP 3 OF 3</div>
+        <div style="font-size: 40px; font-weight: 700; color: #1A211C; margin-top: 20px;">Your ride vibe?</div>
+        <div style="display: flex; justify-content: space-between; margin-top: 44px; font-size: 26px; font-weight: 600; color: #3E4B43;"><span>&#9833; quiet</span><span>chatty &#9834;</span></div>
+        <div style="margin-top: 16px; height: 10px; border-radius: 5px; background: #E2DFD5; position: relative;"><div style="position: absolute; left: 0; top: 0; height: 10px; width: 60%; border-radius: 5px; background: #0E8A57;"></div><div style="position: absolute; left: 58%; top: -9px; width: 28px; height: 28px; border-radius: 50%; background: #0E8A57; border: 4px solid #FFFFFF; box-shadow: 0 1px 6px rgba(0,0,0,0.2);"></div></div>
+        <div style="margin-top: 48px; padding: 24px; border-radius: 16px; background: #E9F4EC; font-size: 25px; color: #2E5C44; line-height: 1.6;">We seat you with people you&rsquo;ll actually enjoy.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. THE KEY INTERACTION ============ -->
+  <section data-label="Key Interaction" data-speaker-notes="This is the one interaction that makes Cambus worth building. It's Thursday night — the app has already predicted Salma's usual Friday ride home, with her driver, her coffee stop, her payment. One tap: Book it. And 'why this?' opens full transparency." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; padding: 100px 120px; gap: 90px; align-items: center;">
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">03 &middot; THE KEY INTERACTION</div>
+      <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">Your usual ride, predicted.</div>
+      <div style="font-size: 32px; color: #6D7A71; margin-top: 44px; line-height: 1.7; max-width: 700px;">Cambus learns each student&rsquo;s weekly rhythm from their real trips &mdash; then has the ride ready before they open the app.</div>
+      <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 56px;">
+        <div style="display: flex; align-items: center; gap: 18px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #0E8A57;"></div><div style="font-size: 28px; color: #1A211C; font-weight: 600;">one tap to book &mdash; zero planning</div></div>
+        <div style="display: flex; align-items: center; gap: 18px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #0E8A57;"></div><div style="font-size: 28px; color: #1A211C; font-weight: 600;">&ldquo;why this?&rdquo; explains every suggestion</div></div>
+        <div style="display: flex; align-items: center; gap: 18px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: #0E8A57;"></div><div style="font-size: 28px; color: #1A211C; font-weight: 600;">&ldquo;Not now&rdquo; is always one tap away</div></div>
+      </div>
+    </div>
+    <div style="width: 640px; background: #FFFFFF; border: 3px solid #0E8A57; border-radius: 28px; padding: 44px; box-shadow: 0 12px 48px rgba(14,138,87,0.15);">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 24px; font-weight: 700; letter-spacing: 3px; color: #0E8A57;">&#10022; YOUR USUAL RIDE</div>
+        <div style="font-size: 24px; color: #6D7A71; text-decoration: underline;">why this?</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px; margin-top: 40px;">
+        <div style="width: 16px; height: 16px; border-radius: 50%; background: #0E8A57;"></div>
+        <div style="font-size: 52px; font-weight: 700; color: #1A211C;">Ifrane</div>
+        <div style="flex: 1; border-top: 3px dashed #BFCCC2; position: relative;"><div style="position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 24px; font-weight: 700; color: #0E8A57; background: #FFFFFF; padding: 0 12px; white-space: nowrap;">Fri 17:00</div></div>
+        <div style="font-size: 52px; font-weight: 700; color: #1A211C;">Casa</div>
+        <div style="width: 16px; height: 16px; border-radius: 50%; background: #1A211C;"></div>
+      </div>
+      <div style="font-size: 26px; color: #3E4B43; line-height: 1.7; margin-top: 36px;">It&rsquo;s Thursday &mdash; you go home most Fridays after CSC 3324. Yasmine drives. Your coffee stop is included.</div>
+      <div style="display: flex; gap: 18px; margin-top: 40px;">
+        <div style="flex: 1; padding: 26px; border-radius: 16px; background: #0E8A57; color: #FFFFFF; font-size: 30px; font-weight: 700; text-align: center;">Book it</div>
+        <div style="padding: 26px 36px; border-radius: 16px; background: #FFFFFF; border: 2px solid #E2DFD5; color: #6D7A71; font-size: 30px; font-weight: 600;">Not now</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. BOOKING ============ -->
+  <section data-label="Booking" data-speaker-notes="Booking is a confirmation, not a form. Route, times, round trip, payment — all pre-filled from habits. The student just checks and confirms. Fair-split pricing keeps it honest for drivers too." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; padding: 100px 120px; gap: 90px; align-items: center;">
+    <div style="width: 640px; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 28px; padding: 44px;">
+      <div style="font-size: 40px; font-weight: 700; color: #1A211C;">Check your trip</div>
+      <div style="font-size: 24px; color: #6D7A71; margin-top: 12px;">pre-filled from your habits</div>
+      <div style="margin-top: 36px; padding: 30px; border-radius: 18px; background: #F7F5F0; display: flex; align-items: center; gap: 18px;">
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: #0E8A57;"></div>
+        <div style="font-size: 38px; font-weight: 700; color: #1A211C;">Ifrane</div>
+        <div style="flex: 1; border-top: 3px dashed #D8D4C8; position: relative;"><div style="position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 26px; color: #0E8A57; background: #F7F5F0; padding: 0 10px;">&rarr;</div></div>
+        <div style="font-size: 38px; font-weight: 700; color: #1A211C;">Casa</div>
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: #1A211C;"></div>
+      </div>
+      <div style="display: flex; gap: 18px; margin-top: 18px;">
+        <div style="flex: 1; padding: 26px; border-radius: 18px; background: #F7F5F0;">
+          <div style="font-size: 22px; font-weight: 700; color: #6D7A71; letter-spacing: 2px;">LEAVE</div>
+          <div style="font-size: 34px; font-weight: 700; color: #1A211C; margin-top: 8px;">Fri 17:00</div>
+          <div style="font-size: 22px; color: #0E8A57; margin-top: 6px;">&#10003; after your last class</div>
+        </div>
+        <div style="flex: 1; padding: 26px; border-radius: 18px; background: #F7F5F0;">
+          <div style="font-size: 22px; font-weight: 700; color: #6D7A71; letter-spacing: 2px;">RETURN</div>
+          <div style="font-size: 34px; font-weight: 700; color: #1A211C; margin-top: 8px;">Sun 18:30</div>
+          <div style="font-size: 22px; color: #6D7A71; margin-top: 6px;">back for Monday 8am</div>
+        </div>
+      </div>
+      <div style="margin-top: 32px; padding: 30px; border-radius: 18px; background: #0E8A57; color: #FFFFFF; font-size: 32px; font-weight: 700; text-align: center;">Confirm &middot; 85 MAD</div>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">04 &middot; BOOKING</div>
+      <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">Confirm, don&rsquo;t configure.</div>
+      <div style="font-size: 32px; color: #6D7A71; margin-top: 44px; line-height: 1.7; max-width: 700px;">Route, times, round trip and payment are filled in from real behavior. Booking home for the weekend takes one look and one tap.</div>
+      <div style="margin-top: 52px; padding: 30px 34px; border-radius: 18px; background: #E9F4EC; font-size: 28px; color: #2E5C44; line-height: 1.7; max-width: 700px;">Fair split: 85 MAD &mdash; fuel + tolls across 4 seats. Fair for riders, honest for drivers.</div>
+    </div>
+  </section>
+
+  <!-- ============ 6. SAFETY & TRANSPARENCY ============ -->
+  <section data-label="Safety" data-speaker-notes="Trust is the AI dimension done right. Left: the safety rules — AUI-verified accounts, women-only cars, live trip sharing. Right: 'What Cambus knows' — every learned habit is visible, explained with confidence, and deletable. Grades, GPA, messages: never collected. This is our HCAI principle — user control and explainability." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; padding: 100px 120px;">
+    <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">05 &middot; SAFETY &amp; TRANSPARENCY</div>
+    <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">The AI shows its work.</div>
+    <div style="display: flex; gap: 40px; margin-top: 70px;">
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 26px; font-weight: 700; color: #0E8A57; letter-spacing: 2px;">SAFETY, BUILT IN</div>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 36px;"><div style="font-size: 30px; color: #0E8A57;">&#10003;</div><div style="font-size: 29px; color: #1A211C; font-weight: 600;">AUI-verified accounts only</div></div>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 24px;"><div style="font-size: 30px; color: #0E8A57;">&#10003;</div><div style="font-size: 29px; color: #1A211C; font-weight: 600;">women-only car filter</div></div>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 24px;"><div style="font-size: 30px; color: #0E8A57;">&#10003;</div><div style="font-size: 29px; color: #1A211C; font-weight: 600;">live trip sharing with family</div></div>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 24px;"><div style="font-size: 30px; color: #0E8A57;">&#10003;</div><div style="font-size: 29px; color: #1A211C; font-weight: 600;">report any rider or driver</div></div>
+      </div>
+      <div style="flex: 1.2; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 26px; font-weight: 700; color: #0E8A57; letter-spacing: 2px;">WHAT CAMBUS KNOWS</div>
+        <div style="margin-top: 32px; padding: 24px 28px; border-radius: 16px; background: #F7F5F0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 27px; font-weight: 700; color: #1A211C;">Fridays 17:00 &middot; Ifrane &rarr; Casa</div>
+          <div style="font-size: 24px; font-weight: 700; color: #C4502F;">forget</div>
+        </div>
+        <div style="margin-top: 16px; padding: 24px 28px; border-radius: 16px; background: #F7F5F0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 27px; font-weight: 700; color: #1A211C;">Coffee stop near Khemisset</div>
+          <div style="font-size: 24px; font-weight: 700; color: #C4502F;">forget</div>
+        </div>
+        <div style="margin-top: 16px; padding: 24px 28px; border-radius: 16px; background: #F7F5F0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 27px; font-weight: 700; color: #1A211C;">Front seat &mdash; motion sickness</div>
+          <div style="font-size: 24px; font-weight: 700; color: #C4502F;">forget</div>
+        </div>
+        <div style="margin-top: 28px; font-size: 24px; color: #6D7A71; line-height: 1.7;">Never collected: grades &middot; GPA &middot; location outside trips &middot; messages</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. THREE STUDENTS ============ -->
+  <section data-label="Personalization" data-speaker-notes="Proof it's hyper-personalized: same app, three students, three different products. Salma's Friday Casa run with her coffee stop. Omar's Thursday Rabat run with his Asr prayer stop — never skipped in 9 trips. Aya's Marrakech ride: women-only, quiet, live-shared with her mom. None of them configured any of this — Cambus learned it." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; padding: 100px 120px;">
+    <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">06 &middot; HYPER-PERSONALIZATION</div>
+    <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">Same app. Three different products.</div>
+    <div style="display: flex; gap: 40px; margin-top: 70px;">
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 38px; font-weight: 700; color: #1A211C;">Salma</div>
+        <div style="font-size: 24px; color: #6D7A71; margin-top: 8px;">SSE &rsquo;27 &middot; Building 8</div>
+        <div style="margin-top: 32px; padding: 26px; border-radius: 16px; background: #F4FAF6; border: 2px solid #0E8A57;">
+          <div style="font-size: 28px; font-weight: 700; color: #0E8A57;">Fri 17:00 &rarr; Casa</div>
+          <div style="font-size: 24px; color: #3E4B43; margin-top: 12px; line-height: 1.6;">coffee stop &middot; front seat &middot; Apple Pay &middot; around Friday dinner</div>
+        </div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 38px; font-weight: 700; color: #1A211C;">Omar</div>
+        <div style="font-size: 24px; color: #6D7A71; margin-top: 8px;">BBA &rsquo;26 &middot; Building 36</div>
+        <div style="margin-top: 32px; padding: 26px; border-radius: 16px; background: #F4FAF6; border: 2px solid #0E8A57;">
+          <div style="font-size: 28px; font-weight: 700; color: #0E8A57;">Thu 18:00 &rarr; Rabat</div>
+          <div style="font-size: 24px; color: #3E4B43; margin-top: 12px; line-height: 1.6;">Asr stop at Khemisset mosque &middot; cash &middot; never skipped in 9 trips</div>
+        </div>
+      </div>
+      <div style="flex: 1; background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 44px;">
+        <div style="font-size: 38px; font-weight: 700; color: #1A211C;">Aya</div>
+        <div style="font-size: 24px; color: #6D7A71; margin-top: 8px;">CS &rsquo;28 &middot; Building 26</div>
+        <div style="margin-top: 32px; padding: 26px; border-radius: 16px; background: #F4FAF6; border: 2px solid #0E8A57;">
+          <div style="font-size: 28px; font-weight: 700; color: #0E8A57;">Fri 15:00 &rarr; Marrakech</div>
+          <div style="font-size: 24px; color: #3E4B43; margin-top: 12px; line-height: 1.6;">women-only car &middot; quiet ride &middot; live-shared with Mama</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size: 28px; color: #6D7A71; margin-top: 56px;">None of this was configured. All of it was learned &mdash; and all of it can be forgotten.</div>
+  </section>
+
+  <!-- ============ 8. AFTER THE RIDE ============ -->
+  <section data-label="After the Ride" data-speaker-notes="The ride ends socially. Quick rating, then the amber moment: if the car had a good vibe, swap contacts — AirDrop style, shared only if both people tap. Carpooling becomes how you meet people at AUI. Amber is our color for 'your people'; green is the AI." style="background: #F7F5F0; font-family: 'Roboto Mono', monospace; display: flex; padding: 100px 120px; gap: 90px; align-items: center;">
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <div style="font-size: 30px; font-weight: 700; color: #0E8A57; letter-spacing: 3px;">07 &middot; AFTER THE RIDE</div>
+      <div style="font-size: 72px; font-weight: 700; color: #1A211C; letter-spacing: -2px; margin-top: 40px; line-height: 1.15;">Rides that end in friendships.</div>
+      <div style="font-size: 32px; color: #6D7A71; margin-top: 44px; line-height: 1.7; max-width: 700px;">Rate the ride in two taps. Then, if the chat was good &mdash; swap contacts with the driver or riders. Consent-first, like AirDrop: nothing is shared unless both people tap.</div>
+    </div>
+    <div style="width: 640px; display: flex; flex-direction: column; gap: 24px;">
+      <div style="background: #FFFFFF; border: 2px solid #E2DFD5; border-radius: 24px; padding: 40px; text-align: center;">
+        <div style="font-size: 28px; font-weight: 700; color: #1A211C;">How was the ride?</div>
+        <div style="font-size: 56px; color: #E9B93B; margin-top: 18px; letter-spacing: 10px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 22px;">
+          <div style="padding: 14px 24px; border-radius: 999px; background: #0E8A57; color: #FFFFFF; font-size: 24px; font-weight: 600;">on time</div>
+          <div style="padding: 14px 24px; border-radius: 999px; background: #0E8A57; color: #FFFFFF; font-size: 24px; font-weight: 600;">good company</div>
+        </div>
+      </div>
+      <div style="background: #FBF6E8; border: 3px solid #E8D9AE; border-radius: 24px; padding: 40px;">
+        <div style="font-size: 28px; font-weight: 700; color: #8A6516;">&#9742;&#xFE0E; Nice chat? Swap contacts</div>
+        <div style="font-size: 24px; color: #8A7A4E; margin-top: 14px; line-height: 1.6;">shared only if you both tap</div>
+        <div style="display: flex; gap: 14px; margin-top: 26px; flex-wrap: wrap;">
+          <div style="padding: 16px 26px; border-radius: 999px; background: #B98A1C; color: #FFFFFF; font-size: 25px; font-weight: 700;">Yasmine &#10003; sent</div>
+          <div style="padding: 16px 26px; border-radius: 999px; background: #FFFFFF; border: 2px solid #E8D9AE; color: #8A6516; font-size: 25px; font-weight: 700;">Rim &middot; SSE &rsquo;27</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9. WHAT'S NEXT ============ -->
+  <section data-label="What's Next" data-speaker-notes="Next week: concept-test the prediction card with 20 students during finals travel, measure how often the AI pick is accepted versus corrected, and recruit the first 10 drivers for the Casa and Rabat runs. Cambus: the ride that plans itself." style="background: #0E8A57; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; justify-content: center; padding: 120px;">
+    <div style="font-size: 30px; font-weight: 700; color: #BFE8D2; letter-spacing: 3px;">08 &middot; WHAT&rsquo;S NEXT</div>
+    <div style="display: flex; flex-direction: column; gap: 36px; margin-top: 70px; max-width: 1400px;">
+      <div style="display: flex; align-items: baseline; gap: 32px;">
+        <div style="font-size: 44px; font-weight: 700; color: #BFE8D2; width: 80px;">01</div>
+        <div style="font-size: 40px; font-weight: 600; color: #FFFFFF; line-height: 1.4;">concept-test the prediction card with 20 students during finals travel</div>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px;">
+        <div style="font-size: 44px; font-weight: 700; color: #BFE8D2; width: 80px;">02</div>
+        <div style="font-size: 40px; font-weight: 600; color: #FFFFFF; line-height: 1.4;">measure accepted vs corrected AI picks &mdash; our honesty metric</div>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 32px;">
+        <div style="font-size: 44px; font-weight: 700; color: #BFE8D2; width: 80px;">03</div>
+        <div style="font-size: 40px; font-weight: 600; color: #FFFFFF; line-height: 1.4;">recruit the first 10 drivers for the Casa and Rabat weekend runs</div>
+      </div>
+    </div>
+    <div style="font-size: 56px; font-weight: 700; color: #FFFFFF; margin-top: 100px; letter-spacing: -1px;">cambus<span style="color: #BFE8D2;">_</span> <span style="color: #E9F4EC; font-weight: 400;">&mdash; the ride that plans itself.</span></div>
+  </section>
+
+</x-import>
+</x-dc>
+</body>
+</html>
